@@ -1,0 +1,72 @@
+---
+title: "ShinyApp Dashbroad"
+author: "Caroline Hao"
+date: "9/29/2017"
+output: html_document
+---
+
+```{r}
+install.packages("shinydashboard")
+```
+
+
+```{r}
+library(shinydashboard)
+library(shiny)
+# Divided the page into three parts
+ui <- dashboardPage(
+  dashboardHeader(title = "Choose your life"),
+  dashboardSidebar(sidebarMenu(
+      menuItem("House Available", tabName = "House Available"),
+      menuItem("Room Style",tabName = "Room Style", tabColor = "green")
+  )),
+  dashboardBody()
+)
+
+server <- function(input, output) { }
+shinyApp(ui, server)
+```
+
+
+
+```{r}
+
+
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+
+```{r}
+
+```

@@ -1,0 +1,75 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+#Author: Yufei Zhao
+```{r}
+library(leaflet)
+```
+
+
+
+```{r}
+# change the file path
+#setwd("/Users/zhaox694/Desktop/ADS/Fall2017-project2-fall2017-project2-grp1/data")
+#setwd("./Fall2017-project2-fall2017-project2-grp1/data")
+```
+
+```{r}
+#read school data
+df<-read.csv("/Users/zhaox694/Desktop/ADS/Fall2017-project2-fall2017-project2-grp1/data/school_data.csv", header = TRUE, stringsAsFactors = FALSE)
+```
+
+
+```{r}
+#school <-as.character(df$School)
+#leaflet(data=df) %>% addTiles() %>% addMarkers(lng = ~Longitude,lat = ~Latitude, label = school )%>%addPolygons(lng = ~Longitude,lat = ~Latitude)
+```
+
+
+```{r}
+library(geojsonio)
+nycounties <- geojson_read("/Users/zhaox694/Desktop/nyc.geojson",
+  what = "sp")
+```
+
+
+
+```{r}
+library(dplyr)
+df2 <- df%>% na.omit
+df2$NTA <-  trimws(df2$NTA)
+df2$count <- rep(1, nrow(df2))
+by_NTA <- group_by(df2, NTA, count)
+school <- as.data.frame(summarise(by_NTA, total = sum(count)))
+school$count<-NULL
+```
+
+```{r}
+nta<-as.character(nycounties@data$NTAName)
+sch <- rep(NA, length(nta))
+
+for(i in 1: length(nta)){
+  if(nta[i]%in% school$NTA){
+    sch[i] <- school$total[nta[i] == school$NTA]
+  }
+  else{
+    sch[i] <- 0
+  }
+  
+}
+nycounties@data$school <- sch
+```
+
+```{r}
+qpal <- colorFactor("Blues", nycounties@data$school)
+```
+
+
+```{r}
+leaflet(nycounties) %>% addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5,
+    opacity = 1.0, fillOpacity = 1.0, label = ~ paste(NTAName,school, sep =" & "),
+     highlightOptions = highlightOptions(color = "red", weight = 2,
+      bringToFront = TRUE),fillColor = ~qpal(school)) %>% addTiles() %>% addMarkers(lng = df2$Longitude, lat = df2$Latitude, label = df2$School)
+```
+

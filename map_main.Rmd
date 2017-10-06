@@ -103,7 +103,7 @@ show_theatres=TRUE
 show_hospitals=TRUE
 
 if(show_schools==TRUE){  
-  
+  m<- addMarkers(m, data = schools_trunc, lat = ~ lat, lng = ~long, popup = ~as.character(LEGAL.NAME), label = ~as.character(LEGAL.NAME), icon=icon_school)  
 }
 
 if(show_crimes==TRUE){

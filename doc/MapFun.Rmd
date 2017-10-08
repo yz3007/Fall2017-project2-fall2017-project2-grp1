@@ -21,14 +21,14 @@ nycounties <- geojson_read("../data/nyczip.geojson", what = "sp")
 
 # hospital data
 ```{r}
-hospital <- read.csv("../data/hospital.csv", header=TRUE, stringsAsFactors = FALSE)
+hospital <- read.csv("../data/final_hospital.csv", header=TRUE, stringsAsFactors = FALSE)
 hospital$Longitude <- hospital$Longitude*(-1) # correct the longitugde
 ```
 
 
 # art gallery data
 ```{r}
-art <- read.csv("../data/art_gallery_data.csv", header=TRUE, stringsAsFactors = FALSE)
+art <- read.csv("../data/final_art_gallery.csv", header=TRUE, stringsAsFactors = FALSE)
 
 coord <- sapply(art$the_geom, function(x) {
   substr(x, 8, nchar(x)-1)
@@ -48,7 +48,7 @@ art$latitude <- art_lat
 
 # theatre data
 ```{r}
-theatre <- read.csv("../data/theatre_data.csv", header=TRUE, stringsAsFactors = FALSE)
+theatre <- read.csv("../data/final_theatre.csv", header=TRUE, stringsAsFactors = FALSE)
 
 coord <- sapply(theatre$the_geom, function(x) {
   substr(x, 8, nchar(x)-1)
@@ -80,12 +80,12 @@ crime <- crime %>% na.omit()
 
 # sales data
 ```{r}
-sales <- read.csv("../data/final_sale_data.csv", header=TRUE, stringsAsFactors = FALSE)
+sales <- read.csv("../data/final_sale.csv", header=TRUE, stringsAsFactors = FALSE)
 ```
 
 # rental data
 ```{r}
-rental <- read.csv("../data/final_rental_data.csv", header=TRUE, stringsAsFactors = FALSE)
+rental <- read.csv("../data/final_rental.csv", header=TRUE, stringsAsFactors = FALSE)
 ```
 
 

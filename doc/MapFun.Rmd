@@ -6,6 +6,20 @@ output:
 ---
 
 ```{r, message=FALSE, warning=FALSE}
+
+packages.used=c("leaflet","geojsonio","knitr","dplyr","maps","ggmaps","RColorBrewer","htmltools")
+
+# check packages that need to be installed.
+packages.needed=setdiff(packages.used, 
+                        intersect(installed.packages()[,1], 
+                                  packages.used))
+# install additional packages
+if(length(packages.needed)>0){
+  install.packages(packages.needed, dependencies = TRUE)
+}
+
+
+library(ggmap)
 library(leaflet)
 library(dplyr)
 library(geojsonio)
@@ -13,17 +27,23 @@ library(htmltools)
 library(RColorBrewer)
 ```
 
+0: set path
+```{r}
+# change the file path
+setwd("C:/Users/vc2434/Desktop/Fall2017-project2-fall2017-project2-grp1-master")
+
+```
 
 
 
 1: read file in
 ```{r}
-nycounties <- geojson_read("../data/nyczip.geojson", what = "sp")
+nycounties <- geojson_read(file.path(getwd(),"data/nyczip.geojson"), what = "sp")
 ```
 
 # sales data
 ```{r}
-sales <- read.csv("../data/Sale_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+sales <- read.csv(file.path(getwd(),"data/Sale_Data.csv"), header=TRUE, stringsAsFactors = FALSE)
 ```
 
 
@@ -42,7 +62,7 @@ nycounties@data$sales <- salesPrice
 
 # rental data
 ```{r}
-rental <- read.csv("../data/Rental_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+rental <- read.csv(file.path(getwd(),"data/Rental_Data.csv"), header=TRUE, stringsAsFactors = FALSE)
 ```
 
 
@@ -59,7 +79,7 @@ rental <- read.csv("../data/Rental_Data.csv", header=TRUE, stringsAsFactors = FA
 dat <- nycounties@data
 l <- list()
 for (i in 1:5){
-  s<-read.csv(paste("../data/rental_bed",i,".csv", sep=""), header=TRUE, stringsAsFactors = FALSE)
+  s<-read.csv(file.path(getwd(),paste("/data/rental_bed",i,".csv", sep="")), header=TRUE, stringsAsFactors = FALSE)
  # s$RegionName <- as.character(s$RegionName)
   
   rentalPrice <- NULL
@@ -80,14 +100,14 @@ nycounties@data$rental_Bed5 <- l[[5]]
 
 # hospital data
 ```{r}
-hospital <- read.csv("../data/Hospital_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+hospital <- read.csv(file.path(getwd(),"data/Hospital_Data.csv"), header=TRUE, stringsAsFactors = FALSE)
 #hospital$Longitude <- hospital$Longitude*(-1) # correct the longitugde
 ```
 
 
 # art gallery data
 ```{r}
-art <- read.csv("../data/Art_Gallery_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+art <- read.csv(file.path(getwd(),"data/Art_Gallery_Data.csv"), header=TRUE, stringsAsFactors = FALSE)
 
 # coord <- sapply(art$the_geom, function(x) {
 #   substr(x, 8, nchar(x)-1)
@@ -107,7 +127,7 @@ art <- read.csv("../data/Art_Gallery_Data.csv", header=TRUE, stringsAsFactors = 
 
 # theatre data
 ```{r}
-theatre <- read.csv("../data/Theatre_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+theatre <- read.csv(file.path(getwd(),"data/Theatre_Data.csv"), header=TRUE, stringsAsFactors = FALSE)
 
 # coord <- sapply(theatre$the_geom, function(x) {
 #   substr(x, 8, nchar(x)-1)
@@ -128,12 +148,12 @@ theatre <- read.csv("../data/Theatre_Data.csv", header=TRUE, stringsAsFactors = 
 
 # subway data
 ```{r}
-subway <- read.csv("../data/Subway_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+subway <- read.csv(file.path(getwd(),"data/Subway_Data.csv"), header=TRUE, stringsAsFactors = FALSE)
 ```
 
 # crime data
 ```{r}
-crime <- read.csv("../data/Crime_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+crime <- read.csv(file.path(getwd(),"data/Crime_Data.csv"), header=TRUE, stringsAsFactors = FALSE)
 crime <- crime %>% na.omit() 
 ```
 
@@ -158,11 +178,11 @@ IconMaker <- function(address){
 }
 
 
-hospitalIcon <- IconMaker("../fig/Hospital.png")
-galleryIcon <- IconMaker("../fig/Gallery.png")
-theatreIcon <- IconMaker("../fig/Theatre.png")
-subwayIcon <- IconMaker("../fig/Subway.png")
-crimeIcon <- IconMaker("../fig/Crime.png")
+hospitalIcon <- IconMaker(file.path(getwd(),"fig/Hospital.png"))
+galleryIcon <- IconMaker(file.path(getwd(),"fig/Gallery.png"))
+theatreIcon <- IconMaker(file.path(getwd(),"fig/Theatre.png"))
+subwayIcon <- IconMaker(file.path(getwd(),"fig/Subway.png"))
+crimeIcon <- IconMaker(file.path(getwd(),"fig/Crime.png"))
 ```
 
 
@@ -453,6 +473,18 @@ basemap %>% addPolygons(
             title = 'Rental Price For 5 Bedrooms',
             position = "bottomright")
   
+```
+
+
+
+```{r}
+observeEvent(input$basemap_geojson_mouseover, { # update the even object when the mouse is over a geojson shape
+    p <- input$basemap_geojson_mouseover
+    zip_code <- p$id 
+    #OR !!
+    #zip_code <- p$featureId    
+  })
+
 ```
 
 

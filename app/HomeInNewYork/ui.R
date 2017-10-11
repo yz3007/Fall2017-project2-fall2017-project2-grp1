@@ -18,7 +18,7 @@ library(RColorBrewer)
 ui<- navbarPage( "Choose Your Life",
                        
                        ##link to css.file
-                      theme = "styles.css",
+                      theme =  "bootstrap-2.css",
                       #theme = shinytheme("united"),
                        ## 2D Map tab
                        tabPanel("Sales",
@@ -33,7 +33,7 @@ ui<- navbarPage( "Choose Your Life",
                        ## Summary Statistics tab
                        navbarMenu("Rental",
                                   ##Regional Findings tabset
-                                  tabPanel("1-Bed Room",
+                                  tabPanel("1 Bedroom",
                                   
                                            leafletOutput("Bedroom1",width = "100%", height = 700)
                                            
@@ -41,22 +41,22 @@ ui<- navbarPage( "Choose Your Life",
                                   #end Regiona
                                   
                                   ### Exchange Rate
-                                  tabPanel("2-Bed Room",
+                                  tabPanel("2 Bedroom",
                                            
                                            leafletOutput("Bedroom2",width = "100%", height = 700)
                                                                       
                                            ),
-                                  tabPanel("3-Bed Room",
+                                  tabPanel("3 Bedroom",
                                            
                                            leafletOutput("Bedroom3",width = "100%", height = 700)
                                            
                                            ),
-                                  tabPanel("4-Bed Room",
+                                  tabPanel("4 Bedroom",
                                           
                                            leafletOutput("Bedroom4",width = "100%", height = 700)
                                            
                                            ),
-                                  tabPanel("5-Bed Room",
+                                  tabPanel("5+ Bedroom",
                                            
                                            leafletOutput("Bedroom5",width = "100%", height = 700)
                                            

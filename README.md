@@ -19,17 +19,22 @@ People spend a lot of time visiting appartments before finding the neighborhood 
 	+ What is the rent of a 1-Bedroom appartment vs 2-bedroom in the neighborhood ?
 	
 + **on the neighborhood characteristics:**
-	+ ** Transportation ** : Is it well deserved ? 
-	+ ** Safety ** : Is it a safe neighborhood ?
-	+ ** Education ** : What are the closest schools ? Are they close enough ?
-	+ ** Health ** : How close am I from the next hospital ?
-	+ ** Entertainment ** : 
-	+ What is the trend of the price ? Is it a good investment to make ?
-	+ What is the rent of a 1-Bedroom appartment vs 2-bedroom in the neighborhood ?
-	+ team member 2
-	+ team member 3
-	+ team member 4
-
+	+ **Neighborhood characteristics:  What should you know about your future neighborhood ?**
+	The app display all the information you should know about the neighborhood:
+	 	++ the demographics of the neighborhood: age of the population, families, race
+		++ information about the real estate and its evolution in the recent years
+		++ the median earning of the neighborhood
+	+ **Transportation: Is it well deserved ?** 	
+	The app allows to display the metro station. You can easily explore the city and find the neighborhood that are the more deserved by the transportation system.
+	+ **Safety: Is it a safe neighborhood ?** 
+	The app allows to plot clusters of the crimes that have happen in your neighborhood during the recent years. This will be a good estimation of the safety of your neighborhood.
+	+ **Education: What are the closest schools for my kids ?**
+	The app can display the schools that are the closest to your place. That will allow you to very quickly check if this neighborhood is good for your children.
+	+ **Health: How close am I from the next hospital ?** 
+	The app also displays all the health facilities around your future place. This will allow the more carefull users to choose their place accordingly.
+	+ **Entertainment: Is there theatres close-by ? Can I easily go visit an art gallery ?** 
+	Finally, the app can help you understand if you will be able to have an artistic life in your neighborhood by displaying the closest theatres and art galleries.
+	
 
 Business values of information presented
 is it of importance?

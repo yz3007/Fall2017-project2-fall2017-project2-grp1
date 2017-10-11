@@ -17,8 +17,14 @@ library(RColorBrewer)
 library(plotly)
 library(ggplot2)
 library(zoo)
+library(sf)
 # Preparation
-nycounties <- geojson_read("./data/nyczip.geojson", what = "sp")
+#nycounties <- geojson_read("./data/nyczip.geojson", what = "sp")
+
+#nycounties <- readOGR(dsn="./data/mygeodata/", layer="nyczip.shp")
+nycounties <- readOGR("./data/mygeodata/nyczip.shp")
+
+
 sales <- read.csv("./data/Sale_Data.csv", header=TRUE, stringsAsFactors = FALSE)
 nycounties$postalCode <- as.numeric(as.character(nycounties$postalCode))
 dat <- nycounties@data

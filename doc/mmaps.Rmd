@@ -1,0 +1,946 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+library(shinydashboard)
+library(shiny)
+library(leaflet)
+library(dplyr)
+library(geojsonio)
+library(htmltools)
+library(RColorBrewer)
+```
+
+```{r}
+nycounties <- geojson_read("../data/nyczip.geojson", what = "sp")
+sales <- read.csv("../data/Sale_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+nycounties$postalCode <- as.numeric(as.character(nycounties$postalCode))
+dat <- nycounties@data
+salesPrice <- NULL
+for(i in 1:nrow(dat)){
+  zip <- dat$postalCode[i]
+  salesPrice <- c(salesPrice, sales$Price_Predict[sales$RegionName == zip])
+}
+nycounties@data$sales <- salesPrice
+```
+
+
+```{r}
+rental <- read.csv("../data/Rental_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+dat <- nycounties@data
+l <- list()
+for (i in 1:5){
+  s<-read.csv(paste("../data/rental_bed",i,".csv", sep=""), header=TRUE, stringsAsFactors = FALSE)
+ # s$RegionName <- as.character(s$RegionName)
+  
+  rentalPrice <- NULL
+  
+  for(j in 1:nrow(dat)){
+    zip <- dat$postalCode[j]
+    rentalPrice <- c(rentalPrice, s$Price_Predict[s$RegionName == zip])
+  }
+  
+  l[[i]] <- rentalPrice
+}
+nycounties@data$rental_Bed1 <- l[[1]]
+nycounties@data$rental_Bed2 <- l[[2]]
+nycounties@data$rental_Bed3 <- l[[3]]
+nycounties@data$rental_Bed4 <- l[[4]]
+nycounties@data$rental_Bed5 <- l[[5]]
+```
+
+
+```{r}
+hospital <- read.csv("../data/Hospital_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+hospital$longitude <- hospital$Longitude
+hospital$latitude <- hospital$Latitude
+#art
+art <- read.csv("../data/Art_Gallery_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+art$longitude <- art$long
+art$latitude <- art$lat
+#theatre
+theatre <- read.csv("../data/Theatre_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+
+theatre$longitude <- theatre$long
+theatre$latitude <- theatre$lat
+#subway
+subway <- read.csv("../data/Subway_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+subway$longitude <- subway$Long
+subway$latitude <- subway$Lat
+#crime
+crime <- read.csv("../data/Crime_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+crime <- crime %>% na.omit() 
+crime$longitude <- crime$Longitude
+crime$latitude <- crime$Latitude
+#total
+data.list <- list(crime=crime,subway=subway,theatre=theatre,art = art,hospital=hospital)
+```
+
+```{r}
+#Icon marker
+IconMaker <- function(address){
+      icon <- makeIcon(
+      iconUrl = address,
+      iconWidth = 30, iconHeight = 30,
+      iconAnchorX = 0, iconAnchorY = 0)
+}
+
+iconS <-list()
+
+iconS$hospital <- IconMaker("../fig/Hospital.png")
+
+iconS$art <- IconMaker("../fig/Gallery.png")
+
+iconS$theatre <- IconMaker("../fig/Theatre.png")
+
+iconS$subway <- IconMaker("../fig/Subway.png")
+
+iconS$crime <- IconMaker("../fig/Crime.png")
+```
+
+#pops
+```{r}
+pops <- list()
+pops$hospital <- paste0("<center><strong style='color:blue'>",hospital$Facility.Name,"</strong>","<br/>",hospital$Phone, "<br/>", hospital$address, "</center>")
+pops$art <- paste0("<center><strong style='color:blue'>",art$NAME,"</strong>","<br/>",paste(art$ADDRESS1, art$ADDRESS2), "</center>")
+pops$theatre <- paste0("<center><strong style='color:blue'>",theatre$NAME,"</strong>","<br/>",paste(theatre$ADDRESS1, theatre$ADDRESS2), "</center>")
+pops$subway <- paste0("<center><strong style='color:blue'>",subway$NAME,"</strong>","<br/>",subway$LINE, "</center>")
+pops$crime <- paste0("<center><strong style='color:blue'>",crime$LAW_CAT_CD,"</strong>","<br/>",crime$BORO_NM, "</center>")
+```
+
+#Basemap
+```{r}
+basemap <- leaflet(nycounties) %>% addPolygons( color = "#BFA",weight = 1, smoothFactor = 0.5, opacity = 1.0, fillOpacity = 0.5, highlightOptions = highlightOptions(color = "red", weight = 2, bringToFront = TRUE)) %>% addTiles()
+```
+#Sale map
+```{r}
+bins <- c(0, 500, 1000, 1500, 2000, 2500,Inf)
+#    YlGnBu (YlOrBr) (YlGn) Blues Reds (Accent) Oranges Purples
+pal <- colorBin("YlOrRd", domain = nycounties$sales, bins = bins)
+labels_sales <- sprintf(
+  "<strong>ZipCode: %s</strong><br/>%g $ / ft<sup>2</sup>",
+  as.character(nycounties$postalCode), nycounties$sales
+) %>% lapply(htmltools::HTML)
+
+salesMap <- basemap %>% addPolygons(
+  fillColor = pal(nycounties$sales),
+  color = "#444444", 
+  weight = 2, 
+  smoothFactor = 0.5, 
+  opacity = 1.0, 
+  dashArray = "3",
+  fillOpacity = 0.7,
+  highlight = highlightOptions(
+    weight = 5,
+    color = "#355C7D",
+    dashArray = "",
+    fillOpacity = 0.7,
+    bringToFront = TRUE),
+  label = labels_sales,
+  labelOptions = labelOptions(
+    style = list("font-weight" = "normal", padding = "3px 8px"),
+    textsize = "15px",
+    direction = "auto")
+  )  %>% addLegend(pal = pal, 
+            values = nycounties$sales,
+            opacity = 0.7, 
+            title = 'Price Per Square Feet',
+            position = "bottomright")
+```
+
+#Rental map
+```{r}
+# rent_data : data set which consists of 5 types of bedrooms
+# bed: type of bedroom such as 1,2,3,4,5 
+
+bin1 <- c(0, 1000, 2000, 3000, 4000,Inf) #bed 1
+bin2 <- c(0,1000,2000,3000,4000,5000,6000,7000, Inf) #bed2
+bin3 <- c(0,2000,4000,6000,8000,Inf) #bed3
+bin4 <- c(0,2000,4000,6000,8000,10000,Inf) #bed4
+bin5 <- c(0,2000,4000,6000,8000,10000,Inf) #bed5
+
+
+#YlGnBu (YlOrBr) (YlGn) Blues Reds (Accent) Oranges Purples
+pal1 <- colorBin("YlGnBu", domain = nycounties$rental_Bed1, bins = bin1)
+pal2 <- colorBin("Blues", domain = nycounties$rental_Bed2, bins = bin2)
+pal3 <- colorBin("Reds", domain = nycounties$rental_Bed3, bins = bin3)
+pal4 <- colorBin("Oranges", domain = nycounties$rental_Bed4, bins = bin4)
+pal5 <- colorBin("Purples", domain = nycounties$rental_Bed5, bins = bin5)
+
+```
+
+#1bed
+```{r}
+labels_bed1 <- sprintf(
+  "<strong>ZipCode: %s</strong><br/>$%g",
+  as.character(nycounties$postalCode), nycounties$rental_Bed1
+) %>% lapply(htmltools::HTML)
+
+
+rental1bed <- basemap %>% addPolygons(
+    fillColor = pal1(nycounties$rental_Bed1),
+    color = "#444444", 
+    weight = 2, 
+    smoothFactor = 0.5, 
+    opacity = 1.0, 
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlight = highlightOptions(
+      weight = 5,
+      color = "#355C7D",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels_bed1,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")
+    )  %>% addLegend(pal = pal1, 
+            values = nycounties$rental_Bed1,
+            opacity = 0.7, 
+            title = 'Rental Price For 1 Bedroom',
+            position = "bottomright")
+```
+
+#2BED
+```{r}
+labels_bed2 <- sprintf(
+  "<strong>ZipCode: %s</strong><br/>$%g",
+  as.character(nycounties$postalCode), nycounties$rental_Bed2
+) %>% lapply(htmltools::HTML)
+
+
+rental2bed <- basemap %>% addPolygons(
+    fillColor = pal2(nycounties$rental_Bed2),
+    color = "#444444", 
+    weight = 2, 
+    smoothFactor = 0.5, 
+    opacity = 1.0, 
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlight = highlightOptions(
+      weight = 5,
+      color = "#355C7D",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels_bed2,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")
+    )  %>% addLegend(pal = pal2, 
+            values = nycounties$rental_Bed2,
+            opacity = 0.7, 
+            title = 'Rental Price For 2 Bedrooms',
+            position = "bottomright")
+```
+
+#rental3bed
+```{r}
+labels_bed3 <- sprintf(
+  "<strong>ZipCode: %s</strong><br/>$%g",
+  as.character(nycounties$postalCode), nycounties$rental_Bed3
+) %>% lapply(htmltools::HTML)
+
+
+rental3bed <- basemap %>% addPolygons(
+    fillColor = pal3(nycounties$rental_Bed3),
+    color = "#444444", 
+    weight = 2, 
+    smoothFactor = 0.5, 
+    opacity = 1.0, 
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlight = highlightOptions(
+      weight = 5,
+      color = "#355C7D",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels_bed3,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")
+    )  %>% addLegend(pal = pal3, 
+            values = nycounties$rental_Bed3,
+            opacity = 0.7, 
+            title = 'Rental Price For 3 Bedrooms',
+            position = "bottomright")
+```
+
+#rental4bed
+```{r}
+labels_bed4 <- sprintf(
+  "<strong>ZipCode: %s</strong><br/>$%g",
+  as.character(nycounties$postalCode), nycounties$rental_Bed4
+) %>% lapply(htmltools::HTML)
+
+
+rental4bed <- basemap %>% addPolygons(
+    fillColor = pal4(nycounties$rental_Bed4),
+    color = "#444444", 
+    weight = 2, 
+    smoothFactor = 0.5, 
+    opacity = 1.0, 
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlight = highlightOptions(
+      weight = 5,
+      color = "#355C7D",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels_bed4,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")
+    )  %>% addLegend(pal = pal4, 
+            values = nycounties$rental_Bed4,
+            opacity = 0.7, 
+            title = 'Rental Price For 4 Bedrooms',
+            position = "bottomright")
+```
+
+#rental5bed
+```{r}
+labels_bed5 <- sprintf(
+  "<strong>ZipCode: %s</strong><br/>$%g",
+  as.character(nycounties$postalCode), nycounties$rental_Bed5
+) %>% lapply(htmltools::HTML)
+
+
+rental5bed <- basemap %>% addPolygons(
+    fillColor = pal5(nycounties$rental_Bed5),
+    color = "#444444", 
+    weight = 2, 
+    smoothFactor = 0.5, 
+    opacity = 1.0, 
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlight = highlightOptions(
+      weight = 5,
+      color = "#355C7D",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels_bed5,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")
+    )  %>% addLegend(pal = pal5, 
+            values = nycounties$rental_Bed5,
+            opacity = 0.7, 
+            title = 'Rental Price For 5 Bedrooms',
+            position = "bottomright")
+```
+
+
+```{r}
+# Divided the page into three parts
+ui <- dashboardPage(
+  dashboardHeader(title = "Choose your life"),
+  dashboardSidebar(sidebarMenu(
+    sidebarMenu(
+      menuItem("House for Rential", tabName = "Rental-bedroom", icon = icon("home")) ,
+      menuSubItem("1-Bed Room",tabName = "Rental-1-bedroom"),
+      menuSubItem("2-Bed Room",tabName = "Rental-2-bedroom"),
+      menuSubItem("3-Bed Room",tabName = "Rental-3-bedroom"),
+      menuSubItem("4-Bed Room",tabName = "Rental-4-bedroom"),
+      menuSubItem("5-Bed Room",tabName = "Rental-5-bedroom"),
+      menuItem("House for Sales",tabName = "Sale-bedroom",icon = icon("home")))),
+    
+    checkboxGroupInput("Factors", "Factors",
+                       c("Transportation" = 'subway','Hospital'="hospital",#'School'="school",
+                         'Arts'="art"
+                         ,'Crime'="crime", 'Theater'="theatre"))),
+  
+  
+  dashboardBody(tabItems(
+    tabItem(
+      tabName = "Rental-bedroom",
+      box(
+        title = "Room for Rent",
+        collapsible = TRUE,
+        width = "100%",
+        height = "100%",
+        leafletOutput("BedroomRent")
+      )
+    ),
+    tabItem(
+      tabName = "Rental-1-bedroom",
+      box(
+        title = "1 Bedroom Rental Room",
+        collapsible = TRUE,
+        width = "100%",
+        height = "100%",
+        leafletOutput("Bedroom1")
+      )
+    ),
+    tabItem(
+      tabName = "Rental-2-bedroom",
+      box(
+        title = "2 Bedroom Rental Room",
+        collapsible = TRUE,
+        width = "100%",
+        height = "100%",
+        leafletOutput("Bedroom2")
+      )
+    ),
+    tabItem(
+      tabName = "Rental-3-bedroom",
+      box(
+        title = "3 Bedroom Rental Room",
+        collapsible = TRUE,
+        width = "100%",
+        height = "100%",
+        leafletOutput("Bedroom3")
+      )
+    ),
+    tabItem(
+      tabName = "Rental-4-bedroom",
+      box(
+        title = "4 Bedroom Rental Room",
+        collapsible = TRUE,
+        width = "100%",
+        height = "100%",
+        leafletOutput("Bedroom4")
+      )
+    ),
+    tabItem(
+      tabName = "Rental-5-bedroom",
+      box(
+        title = "5 Bedroom Rental Room",
+        collapsible = TRUE,
+        width = "100%",
+        height = "100%",
+        leafletOutput("Bedroom5")
+      )
+    ),
+    tabItem(
+      tabName = "Sale-bedroom",
+      box(
+        title = "Room for Sale",
+        collapsible = TRUE,
+        width = "100%",
+        height = "100%",
+        leafletOutput("BedroomSale")
+      )
+    )
+  )))
+
+server <- function(input, output) {
+  output$BedroomSale <- renderLeaflet({
+    salesMap
+  })
+  output$BedroomRent <- renderLeaflet({
+    basemap
+  })
+  output$Bedroom1 <- renderLeaflet({
+    rental1bed
+  })
+  output$Bedroom2 <- renderLeaflet({
+    rental2bed
+  })
+  output$Bedroom3 <- renderLeaflet({
+    rental3bed
+  })
+  output$Bedroom4 <- renderLeaflet({
+    rental4bed
+  })
+  output$Bedroom5 <- renderLeaflet({
+    rental5bed
+  })
+  
+
+  observeEvent(input$Factors,{
+    proxy <- leafletProxy('BedroomSale')
+    if(!is.null(input$Factors)){
+      if("subway" %in% input$Factors){
+        x='subway'
+        pop_s =pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          clearMarkers() %>%
+          addMarkers(
+                 lng = dat$longitude,
+                 lat = dat$latitude,
+                 #layerID = "aa",
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )
+        }
+     
+      #else if (input$Factors == "school"){x='school'}
+      if ('hospital' %in% input$Factors){
+        x = 'hospital'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+     
+      if( "art" %in% input$Factors ){ 
+        x='art'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("crime" %in% input$Factors ){
+        x = 'crime'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("theatre" %in% input$Factors){
+        x = 'theatre'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+      
+      
+    }
+      
+    
+    
+      
+  })
+   observeEvent(input$Factors,{
+    proxy <- leafletProxy('Bedroom1')
+    if(!is.null(input$Factors)){
+      if("subway" %in% input$Factors){
+        x='subway'
+        pop_s =pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          clearMarkers() %>%
+          addMarkers(
+                 lng = dat$longitude,
+                 lat = dat$latitude,
+                 #layerID = "aa",
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )
+        }
+     
+      #else if (input$Factors == "school"){x='school'}
+      if ('hospital' %in% input$Factors){
+        x = 'hospital'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+     
+      if( "art" %in% input$Factors ){ 
+        x='art'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("crime" %in% input$Factors ){
+        x = 'crime'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("theatre" %in% input$Factors){
+        x = 'theatre'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+      
+      
+    }
+      
+  })
+   observeEvent(input$Factors,{
+    proxy <- leafletProxy('Bedroom2')
+    if(!is.null(input$Factors)){
+      if("subway" %in% input$Factors){
+        x='subway'
+        pop_s =pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          clearMarkers() %>%
+          addMarkers(
+                 lng = dat$longitude,
+                 lat = dat$latitude,
+                 #layerID = "aa",
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )
+        }
+     
+      #else if (input$Factors == "school"){x='school'}
+      if ('hospital' %in% input$Factors){
+        x = 'hospital'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+     
+      if( "art" %in% input$Factors ){ 
+        x='art'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("crime" %in% input$Factors ){
+        x = 'crime'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("theatre" %in% input$Factors){
+        x = 'theatre'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+      
+      
+    }
+      
+      
+  })
+   observeEvent(input$Factors,{
+    proxy <- leafletProxy('Bedroom3')
+    if(!is.null(input$Factors)){
+      if("subway" %in% input$Factors){
+        x='subway'
+        pop_s =pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          clearMarkers() %>%
+          addMarkers(
+                 lng = dat$longitude,
+                 lat = dat$latitude,
+                 #layerID = "aa",
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )
+        }
+     
+      #else if (input$Factors == "school"){x='school'}
+      if ('hospital' %in% input$Factors){
+        x = 'hospital'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+     
+      if( "art" %in% input$Factors ){ 
+        x='art'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("crime" %in% input$Factors ){
+        x = 'crime'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("theatre" %in% input$Factors){
+        x = 'theatre'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+      
+      
+    }
+      
+    
+    
+      
+  })
+   observeEvent(input$Factors,{
+    proxy <- leafletProxy('Bedroom4')
+    if(!is.null(input$Factors)){
+      if("subway" %in% input$Factors){
+        x='subway'
+        pop_s =pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          clearMarkers() %>%
+          addMarkers(
+                 lng = dat$longitude,
+                 lat = dat$latitude,
+                 #layerID = "aa",
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )
+        }
+     
+      #else if (input$Factors == "school"){x='school'}
+      if ('hospital' %in% input$Factors){
+        x = 'hospital'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+     
+      if( "art" %in% input$Factors ){ 
+        x='art'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("crime" %in% input$Factors ){
+        x = 'crime'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("theatre" %in% input$Factors){
+        x = 'theatre'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+      
+      
+    }
+      
+    
+      
+  })
+   observeEvent(input$Factors,{
+    proxy <- leafletProxy('Bedroom5')
+   if(!is.null(input$Factors)){
+      if("subway" %in% input$Factors){
+        x='subway'
+        pop_s =pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          clearMarkers() %>%
+          addMarkers(
+                 lng = dat$longitude,
+                 lat = dat$latitude,
+                 #layerID = "aa",
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )
+        }
+     
+      #else if (input$Factors == "school"){x='school'}
+      if ('hospital' %in% input$Factors){
+        x = 'hospital'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+     
+      if( "art" %in% input$Factors ){ 
+        x='art'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy  %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("crime" %in% input$Factors ){
+        x = 'crime'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+      addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+      )}
+      
+      if("theatre" %in% input$Factors){
+        x = 'theatre'
+        pop_s = pops[[x]]
+        IconS = iconS[[x]]
+        dat = data.list[[x]]
+        proxy %>% 
+          addMarkers(lng = dat$longitude,
+                 lat = dat$latitude,
+                 clusterOptions = markerClusterOptions(), 
+                 icon = IconS,
+                 popup = pop_s
+          )}
+      
+      
+    }
+      
+      
+  })
+}
+shinyApp(ui, server)
+
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).

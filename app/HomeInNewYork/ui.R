@@ -29,9 +29,21 @@ ui<- navbarPage( "Choose Your Life",
                           #leafletOutput("BedroomSale",width = "100%", height = 700),                                
                           br(),
                           column(8,leafletOutput("BedroomSale", height="700px")),
-                  
-                          column(4,br(),br(),br(),br(),plotlyOutput("plot", height="300px")),
-                          column(4,br(),br(),br(),br(),htmlOutput("text1")),
+                          column(4,htmlOutput("text01")),
+                          tags$head(tags$style("#text01{color: black;
+                                 font-size: 20px;
+                                               font-style: bold;
+                                               }"
+                         )
+                          ),
+                          column(4,plotlyOutput("plot", height="300px")),
+                          column(4,br(),br(),htmlOutput("text1")),
+                         tags$head(tags$style("#text1{color: black;
+                                 font-size: 10px;
+                                              
+                                              }"
+                         )
+                         ),
                           #Please add a box for the text !!
                           br()       
                           #absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
@@ -49,9 +61,22 @@ ui<- navbarPage( "Choose Your Life",
                                            #leafletOutput("Bedroom1",width = "100%", height = 700)
                                            br(),
                                            column(8,leafletOutput("Bedroom1", height = 700)),
-                                           column(4,br(),br(),br(),br(),plotlyOutput("plot1", height="300px")),
-                                           column(4,br(),br(),br(),br(),textOutput("text2")),
-                                           #Please add a box for the text !!
+                                           column(4,htmlOutput("text02")),
+                                           tags$head(tags$style("#text02{color: black;
+                                                                font-size: 20px;
+                                                                font-style: bold;
+                                                                }"
+                         )
+                                           ),
+                                           column(4,plotlyOutput("plot1", height="300px")),
+                                           column(4,br(),br(),htmlOutput("text2")),
+                         tags$head(tags$style("#text2{color: black;
+                                 font-size: 10px;
+                                              
+                                              }"
+                         )
+                         ),
+                         #Please add a box for the text !!
                                            br() 
                                            ),
                           
@@ -61,8 +86,22 @@ ui<- navbarPage( "Choose Your Life",
                                            #leafletOutput("Bedroom2",width = "100%", height = 700)
                                            br(),
                                            column(8,leafletOutput("Bedroom2", height = 700)),
-                                           column(4,br(),br(),br(),br(),plotlyOutput("plot2", height="300px")),
-                                           column(4,br(),br(),br(),br(),textOutput("text3")),
+                                           column(4,htmlOutput("text03")),
+                                           tags$head(tags$style("#text03{color: black;
+                                                                font-size: 20px;
+                                                                font-style: bold;
+                                                                }"
+                         )
+                                           ),
+                                           column(4,plotlyOutput("plot2", height="300px")),
+                                           column(4,br(),br(),htmlOutput("text3")),
+tags$head(tags$style("#text3{color: black;
+                                 font-size: 10px;
+                                                                                                                  
+                                                                                                                  }"
+                         )
+                                           ),
+                         
                                            #Please add a box for the text !!
                                            br()                           
                                            ),
@@ -71,8 +110,21 @@ ui<- navbarPage( "Choose Your Life",
                                            #leafletOutput("Bedroom3",width = "100%", height = 700)
                                            br(),
                                            column(8,leafletOutput("Bedroom3", height = 700)),
-                                           column(4,br(),br(),br(),br(),plotlyOutput("plot3", height="300px")),
-                                           column(4,br(),br(),br(),br(),textOutput("text4")),
+                                           column(4,htmlOutput("text04")),
+                                           tags$head(tags$style("#text04{color: black;
+                                                                font-size: 20px;
+                                                                font-style: bold;
+                                                                }"
+                         )
+                                           ),
+                                           column(4,plotlyOutput("plot3", height="300px")),
+                                           column(4,br(),br(),htmlOutput("text4")),
+                         tags$head(tags$style("#text4{color: black;
+                                 font-size: 10px;
+                                              
+                                              }"
+                         )
+                         ),
                                            #Please add a box for the text !!
                                            br()
                                            ),
@@ -81,8 +133,21 @@ ui<- navbarPage( "Choose Your Life",
                                            #leafletOutput("Bedroom4",width = "100%", height = 700)
                                            br(),
                                            column(8,leafletOutput("Bedroom4", height = 700)),
-                                           column(4,br(),br(),br(),br(),plotlyOutput("plot4", height="300px")),
-                                           column(4,br(),br(),br(),br(),textOutput("text5")),
+                                           column(4,htmlOutput("text05")),
+                                           tags$head(tags$style("#text05{color: black;
+                                                                font-size: 20px;
+                                                                font-style: bold;
+                                                                }"
+                         )
+                                           ),
+                                           column(4,plotlyOutput("plot4", height="300px")),
+                                           column(4,br(),br(),htmlOutput("text5")),
+                         tags$head(tags$style("#text5{color: black;
+                                 font-size: 10px;
+                                              
+                                              }"
+                         )
+                         ),
                                            #Please add a box for the text !!
                                            br()
                                            ),
@@ -91,8 +156,21 @@ ui<- navbarPage( "Choose Your Life",
                                            #leafletOutput("Bedroom5",width = "100%", height = 700)
                                            br(),
                                            column(8,leafletOutput("Bedroom5", height = 700)),
-                                           column(4,br(),br(),br(),br(),plotlyOutput("plot5", height="300px")),
-                                           column(4,br(),br(),br(),br(),textOutput("text6")),
+                                           column(4,htmlOutput("text06")),
+                                           tags$head(tags$style("#text06{color: black;
+                                                                font-size: 20px;
+                                                                font-style: bold;
+                                                                }"
+                         )
+                                           ),
+                                           column(4,plotlyOutput("plot5", height="300px")),
+                                           column(4,br(),br(),htmlOutput("text6")),
+                         tags$head(tags$style("#text6{color: black;
+                                 font-size: 10px;
+                                              
+                                              }"
+                         )
+                         ),
                                            #Please add a box for the text !!
                                            br()
                                            )
@@ -119,7 +197,7 @@ ui<- navbarPage( "Choose Your Life",
                                      )
                                      ),
                             tabPanel("Rankings",
-                                     titlePanel("Recent 3 Years Top 10 Rankings"),
+                                     titlePanel("Recent 3 Years Rankings"),
                                      sidebarLayout(
                                        sidebarPanel(
                                          

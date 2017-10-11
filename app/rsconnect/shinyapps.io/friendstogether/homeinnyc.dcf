@@ -1,0 +1,12 @@
+name: homeinnyc
+title: Homeinnyc
+username:
+account: friendstogether
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 224286
+bundleId: 1022249
+url: https://friendstogether.shinyapps.io/homeinnyc/
+when: 1507758771.15202
+asMultiple: FALSE
+asStatic: FALSE

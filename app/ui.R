@@ -11,10 +11,10 @@ library(shiny)
 library(shinydashboard)
 library(leaflet)
 library(dplyr)
-library(geojsonio)
 library(htmltools)
 library(RColorBrewer)
 library(plotly)
+library(rgdal)
 # Define UI for application that draws a histogram
 ui<- navbarPage( "Choose Your Life",
                        

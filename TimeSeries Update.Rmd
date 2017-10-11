@@ -1,0 +1,61 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+install.packages(plotly)
+library(plotly)
+data_sale <- read.csv("../data/Sale_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+data_rental <- read.csv("../data/Rental_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+library(zoo)
+ x<- as.yearmon("2011-09") + 0:71/12
+
+# TimeSeries for Rental
+TimeSeriesPlot_rent <- function(x,y) {
+  zip<- data_rental[data_rental$RegionName == x, ]
+  zip_room <- zip[zip$Bedroom == y, -c(1,2,3,4)]
+  time <- as.yearmon("2011-09") + 0:71/12
+  y <- unlist(zip_room)
+  df <- data.frame(timeperiod=time, price=y)
+  plot_ly(data = df, x=~timeperiod, y=~price, mode = 'lines', opacity=0.8,
+          type="scatter", text = paste("Room Price is",y))
+  
+}
+TimeSeriesPlot_rent(10025,1)
+
+
+# TimeSeries for Sale
+TimeSeriesPlot_sale <- function(Zipcode) {
+  time <- as.yearmon("2011-09") + 0:71/12
+  zip <- data_sale[data_sale$RegionName == 10025, -c(1,2,3)]
+  y <- unlist(zip)
+  df <- data.frame(timeperiod=time, price=y)
+plot_ly(data = df, x=~timeperiod, y=~price, mode = 'lines', type="scatter", text = paste("Room Price is",y))
+}
+
+```
+
+```{r}
+
+```
+
+
+```{r}
+subplot(
+  plot_ly(economics, x = ~date, y = ~psavert, type = "scatter") %>% 
+    add_trace(y = ~uempmed) %>%
+    layout(yaxis = list(title = "Two Traces")),
+  plot_ly(economics, x = ~date, y = ~psavert) %>% 
+    add_trace(y = ~uempmed) %>% 
+    layout(yaxis = list(title = "One Trace")),
+  titleY = TRUE, shareX = TRUE, nrows = 2
+) %>% hide_legend()
+```
+
+
+```{r}
+
+```

@@ -10,9 +10,9 @@ In this second project of GU4243/GR5243 Applied Data Science, we develop an *Exp
 	+ Vassily Carantino
 	+ Yufei Zhao
 
-![screenshot](doc/screenshot2.png)
-
 ## introduction:
+
+![screenshot](doc/Screenshot.png)
 In this second project, we have developed an Rshiny application designed to help New Yorkers to find a place to live. 
 This app allow the users to explore data and find the neighborhood that suits them best. 
  
@@ -50,7 +50,10 @@ People spend a lot of time visiting appartments before finding the neighborhood 
 
 
 ## Contribution statement: 
-([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
+
+Team members: Jing Zhao, Siyi Tao, Shuyao Hao, Vassily Carantino, Yufei Zhao
+
+All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 

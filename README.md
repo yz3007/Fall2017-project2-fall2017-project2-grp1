@@ -1,9 +1,10 @@
-# Project 2: Open Data App - an RShiny app development project
+# Project 2: Open Data App using RShiny - Where do you want to live in New York City
 
 ### [Project Description](doc/project2_desc.md)
 
 ![screenshot](doc/screenshot2.png)
 
+In this second project, we have developed an Rshiny application to help [to be continued]
 In this second project of GU4243/GR5243 Applied Data Science, we develop an *Exploratory Data Analysis and Visualization* shiny app on a topic of your choice using U.S. government open data released on the [data.gov](https://data.gov/) website. See [Project 2 Description](doc/project2_desc.md) for more details.  
 
 The **learning goals** for this project is:

@@ -9,6 +9,9 @@ In this second project of GU4243/GR5243 Applied Data Science, we develop an *Exp
 	+ Shuyao Hao
 	+ Vassily Carantino
 	+ Yufei Zhao
+	
++ **Link to deployed Shiny-App:**
+https://friendstogether.shinyapps.io/homeinnyc/
 
 ## Introduction:
 

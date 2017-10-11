@@ -21,9 +21,9 @@ People spend a lot of time visiting appartments before finding the neighborhood 
 + **on the neighborhood characteristics:**
 	+ **Neighborhood characteristics:  What should you know about your future neighborhood ?**
 	The app display all the information you should know about the neighborhood:
-	 	++ the demographics of the neighborhood: age of the population, families, race
-		++ information about the real estate and its evolution in the recent years
-		++ the median earning of the neighborhood
+	 	+ the demographics of the neighborhood: age of the population, families, race
+		+ information about the real estate and its evolution in the recent years
+		+ the median earning of the neighborhood
 	+ **Transportation: Is it well deserved ?** 	
 	The app allows to display the metro station. You can easily explore the city and find the neighborhood that are the more deserved by the transportation system.
 	+ **Safety: Is it a safe neighborhood ?** 

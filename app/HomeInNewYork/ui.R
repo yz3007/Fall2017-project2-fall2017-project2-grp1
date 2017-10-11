@@ -44,7 +44,7 @@ ui<- navbarPage( "Choose Your Life",
                                            br(),
                                            column(8,leafletOutput("Bedroom1", height = 700)),
                                            column(4,br(),br(),br(),br(),plotOutput("plot1", height="300px")),
-                                           
+                                           column(4,br(),br(),br(),br(),textOutput("text2")),
                                            #Please add a box for the text !!
                                            br() 
                                            ),
@@ -56,7 +56,7 @@ ui<- navbarPage( "Choose Your Life",
                                            br(),
                                            column(8,leafletOutput("Bedroom2", height = 700)),
                                            column(4,br(),br(),br(),br(),plotOutput("plot2", height="300px")),
-                                           
+                                           column(4,br(),br(),br(),br(),textOutput("text3")),
                                            #Please add a box for the text !!
                                            br()                           
                                            ),
@@ -66,7 +66,7 @@ ui<- navbarPage( "Choose Your Life",
                                            br(),
                                            column(8,leafletOutput("Bedroom3", height = 700)),
                                            column(4,br(),br(),br(),br(),plotOutput("plot3", height="300px")),
-                                           
+                                           column(4,br(),br(),br(),br(),textOutput("text4")),
                                            #Please add a box for the text !!
                                            br()
                                            ),
@@ -76,7 +76,7 @@ ui<- navbarPage( "Choose Your Life",
                                            br(),
                                            column(8,leafletOutput("Bedroom4", height = 700)),
                                            column(4,br(),br(),br(),br(),plotOutput("plot4", height="300px")),
-                                           
+                                           column(4,br(),br(),br(),br(),textOutput("text5")),
                                            #Please add a box for the text !!
                                            br()
                                            ),
@@ -86,7 +86,7 @@ ui<- navbarPage( "Choose Your Life",
                                            br(),
                                            column(8,leafletOutput("Bedroom5", height = 700)),
                                            column(4,br(),br(),br(),br(),plotOutput("plot5", height="300px")),
-                                           
+                                           column(4,br(),br(),br(),br(),textOutput("text6")),
                                            #Please add a box for the text !!
                                            br()
                                            )

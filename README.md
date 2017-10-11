@@ -1,9 +1,53 @@
-# Project 2: Open Data App - an RShiny app development project
+# Project 2: Open Data App using RShiny - Where do you want to live in New York City
 
 ### [Project Description](doc/project2_desc.md)
 
 ![screenshot](doc/screenshot2.png)
 
+# introduction:
+In this second project, we have developed an Rshiny application designed to help New Yorkers to find a place to live. 
+This app allow the users to explore data and find the neighborhood that suits them best. 
+ 
+# What is the Business Problem Solved:
+It's always difficult to know where you should live when you arrive in a new city for the first time. Some neighborhood are great but too expensive, others would be cheaper but badly deserved by the subway or maybe would not be safe. 
+
+People spend a lot of time visiting appartments before finding the neighborhood that suits them best. Similarly, Real Estate agents can spend a lot of their precious time explaining the advantages of each neighborhoods to their clients. This app has been deisgned to speed up this process and allow people to very quickly restrict their search to neighborhoods that would suit them, by answering their more important questions:
+
++ **on the price componant:**
+	+ What is the range of prices in the neighborhood ?
+	+ What is the trend of the price ? Is it a good investment to make ?
+	+ What is the rent of a 1-Bedroom appartment vs 2-bedroom in the neighborhood ?
+	
++ **on the neighborhood characteristics:**
+	+ ** Transportation ** : Is it well deserved ? 
+	+ ** Safety ** : Is it a safe neighborhood ?
+	+ ** Education ** : What are the closest schools ? Are they close enough ?
+	+ ** Health ** : How close am I from the next hospital ?
+	+ ** Entertainment ** : 
+	+ What is the trend of the price ? Is it a good investment to make ?
+	+ What is the rent of a 1-Bedroom appartment vs 2-bedroom in the neighborhood ?
+	+ team member 2
+	+ team member 3
+	+ team member 4
+
+
+Business values of information presented
+is it of importance?
+is it interesting?
+can it be used to answer questions or exploring for interesting trends?
+
+Implementation of the apps
+are the data processed properly?
+are necessary measures taken to account for data collection issues such as biases, missing values, etc?
+Visualization
+Is the information visualized clearly?
+Is the visualization easy to understand?
+Presentation and organization
+Is the presentation convincing about the business value of the apps?
+Is the GitHub organized and prepared in a way that makes it easier for readers to appreciate the value of the app and understand how to use the app?
+
+
+a [to be continued]
 In this second project of GU4243/GR5243 Applied Data Science, we develop an *Exploratory Data Analysis and Visualization* shiny app on a topic of your choice using U.S. government open data released on the [data.gov](https://data.gov/) website. See [Project 2 Description](doc/project2_desc.md) for more details.  
 
 The **learning goals** for this project is:

@@ -3,11 +3,7 @@ Term: Fall 2017
 
 In this second project of GU4243/GR5243 Applied Data Science, we develop an *Exploratory Data Analysis and Visualization* shiny app on a topic of your choice using U.S. government open data released on the [data.gov](https://data.gov/) website. See [Project 2 Description](doc/project2_desc.md) for more details.  
 
-
-### [Project Description](doc/project2_desc.md)
-
-+ Team 1
-+ **Where do you want to live in NYC ?**: + Team members
++ **Team 1:**
 	+ Jing Zhao 
 	+ Siyi Tao 
 	+ Shuyao Hao
@@ -16,11 +12,11 @@ In this second project of GU4243/GR5243 Applied Data Science, we develop an *Exp
 
 ![screenshot](doc/screenshot2.png)
 
-# introduction:
+## introduction:
 In this second project, we have developed an Rshiny application designed to help New Yorkers to find a place to live. 
 This app allow the users to explore data and find the neighborhood that suits them best. 
  
-# What is the Business Problem Solved:
+## What is the Business Problem Solved:
 It's always difficult to know where you should live when you arrive in a new city for the first time. Some neighborhood are great but too expensive, others would be cheaper but badly deserved by the subway or maybe would not be safe. 
 
 People spend a lot of time visiting appartments before finding the neighborhood that suits them best. Similarly, Real Estate agents can spend a lot of their precious time explaining the advantages of each neighborhoods to their clients. This app has been deisgned to speed up this process and allow people to very quickly restrict their search to neighborhoods that would suit them, by answering their more important questions:
@@ -47,34 +43,14 @@ People spend a lot of time visiting appartments before finding the neighborhood 
 	+ **Entertainment: Is there theatres close-by ? Can I easily go visit an art gallery ?** 
 	Finally, the app can help you understand if you will be able to have an artistic life in your neighborhood by displaying the closest theatres and art galleries.
 	
-#
-Business values of information presented
-is it of importance?
-is it interesting?
-can it be used to answer questions or exploring for interesting trends?
-
-Implementation of the apps
-are the data processed properly?
-are necessary measures taken to account for data collection issues such as biases, missing values, etc?
-Visualization
-Is the information visualized clearly?
-Is the visualization easy to understand?
-Presentation and organization
-Is the presentation convincing about the business value of the apps?
-Is the GitHub organized and prepared in a way that makes it easier for readers to appreciate the value of the app and understand how to use the app?
+## Data Sources:
 
 
 
 
-The **learning goals** for this project is:
 
-- business intelligence for data science
-- data cleaning
-- data visualization
-- systems development/design life cycle
-- shiny app/shiny server
-
-+ **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
+## Contribution statement: 
+([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 

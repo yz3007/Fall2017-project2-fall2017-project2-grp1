@@ -18,8 +18,8 @@ library(plotly)
 library(ggplot2)
 library(zoo)
 # Preparation
-nycounties <- geojson_read("../data/nyczip.geojson", what = "sp")
-sales <- read.csv("../data/Sale_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+nycounties <- geojson_read("./data/nyczip.geojson", what = "sp")
+sales <- read.csv("./data/Sale_Data.csv", header=TRUE, stringsAsFactors = FALSE)
 nycounties$postalCode <- as.numeric(as.character(nycounties$postalCode))
 dat <- nycounties@data
 salesPrice <- NULL
@@ -32,16 +32,16 @@ nycounties@data$sales <- salesPrice
 # Load data
 
 #School
-school <- read.csv("../data/School_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+school <- read.csv("./data/School_Data.csv", header=TRUE, stringsAsFactors = FALSE)
 school <- school %>% na.omit() 
 school$longitude <- school$long
 school$latitude <- school$lat
 
-rental <- read.csv("../data/Rental_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+rental <- read.csv("./data/Rental_Data.csv", header=TRUE, stringsAsFactors = FALSE)
 dat <- nycounties@data
 l <- list()
 for (i in 1:5){
-  s<-read.csv(paste("../data/rental_bed",i,".csv", sep=""), header=TRUE, stringsAsFactors = FALSE)
+  s<-read.csv(paste("./data/rental_bed",i,".csv", sep=""), header=TRUE, stringsAsFactors = FALSE)
   # s$RegionName <- as.character(s$RegionName)
   
   rentalPrice <- NULL
@@ -59,24 +59,24 @@ nycounties@data$rental_Bed3 <- l[[3]]
 nycounties@data$rental_Bed4 <- l[[4]]
 nycounties@data$rental_Bed5 <- l[[5]]
 
-hospital <- read.csv("../data/Hospital_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+hospital <- read.csv("./data/Hospital_Data.csv", header=TRUE, stringsAsFactors = FALSE)
 hospital$longitude <- hospital$Longitude
 hospital$latitude <- hospital$Latitude
 #art
-art <- read.csv("../data/Art_Gallery_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+art <- read.csv("./data/Art_Gallery_Data.csv", header=TRUE, stringsAsFactors = FALSE)
 art$longitude <- art$long
 art$latitude <- art$lat
 #theatre
-theatre <- read.csv("../data/Theatre_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+theatre <- read.csv("./data/Theatre_Data.csv", header=TRUE, stringsAsFactors = FALSE)
 
 theatre$longitude <- theatre$long
 theatre$latitude <- theatre$lat
 #subway
-subway <- read.csv("../data/Subway_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+subway <- read.csv("./data/Subway_Data.csv", header=TRUE, stringsAsFactors = FALSE)
 subway$longitude <- subway$Long
 subway$latitude <- subway$Lat
 #crime
-crime <- read.csv("../data/Crime_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+crime <- read.csv("./data/Crime_Data.csv", header=TRUE, stringsAsFactors = FALSE)
 crime <- crime %>% na.omit() 
 crime$longitude <- crime$Longitude
 crime$latitude <- crime$Latitude
@@ -93,15 +93,15 @@ IconMaker <- function(address){
 
 iconS <-list()
 
-iconS$hospital <- IconMaker("../fig/Hospital.png")
+iconS$hospital <- IconMaker("./fig/Hospital.png")
 
-iconS$art <- IconMaker("../fig/Gallery.png")
+iconS$art <- IconMaker("./fig/Gallery.png")
 
-iconS$theatre <- IconMaker("../fig/Theatre.png")
+iconS$theatre <- IconMaker("./fig/Theatre.png")
 
-iconS$subway <- IconMaker("../fig/Subway.png")
+iconS$subway <- IconMaker("./fig/Subway.png")
 
-iconS$crime <- IconMaker("../fig/Crime.png")
+iconS$crime <- IconMaker("./fig/Crime.png")
 
 # Pops
 pops <- list()
@@ -188,7 +188,7 @@ TimeSeriesPlot_sale <- function(Zipcode) {
   plot_ly(data = df, x=~timeperiod, y=~price, mode = 'lines', type="scatter", text = paste("Room Price is",y))
 }
 
-info_zip <- read.csv("../data/Zipcode_General_Info.csv", header=TRUE, stringsAsFactors = FALSE)
+info_zip <- read.csv("./data/Zipcode_General_Info.csv", header=TRUE, stringsAsFactors = FALSE)
 
 
 # Define server logic required to draw a histogram

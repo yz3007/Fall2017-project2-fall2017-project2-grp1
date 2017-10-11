@@ -169,13 +169,13 @@ TimeSeriesPlot_rent <- function(x,y) {
           type="scatter", text = paste("Room Price is",y))
   
 }
-
-
+TimeSeriesPlot_rent(10025,1)
+TimeSeriesPlot_rent(10001,1)
 
 # TimeSeries for Sale
 TimeSeriesPlot_sale <- function(Zipcode) {
   time <- as.yearmon("2011-09") + 0:71/12
-  zip <- data_sale[data_sale$RegionName == 10025, -c(1,2,3)]
+  zip <- data_sale[data_sale$RegionName == Zipcode, -c(1,2,3)]
   y <- unlist(zip)
   df <- data.frame(timeperiod=time, price=y)
   plot_ly(data = df, x=~timeperiod, y=~price, mode = 'lines', type="scatter", text = paste("Room Price is",y))
@@ -502,7 +502,11 @@ server <- function(input, output) {
   
   # Make a barplot or scatterplot depending of the selected point
   output$text1 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
-  
+  output$text2 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
+  output$text3 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
+  output$text4 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
+  output$text5 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
+  output$text6 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
   
   output$plot=renderPlotly({
     zip_code=data_of_click$clicked_zone$id
@@ -512,6 +516,61 @@ server <- function(input, output) {
     else{
  
       p = TimeSeriesPlot_sale(zip_code)}
+    p
+  })
+  
+  output$plot1=renderPlotly({
+    zip_code=data_of_click$clicked_zone$id
+    
+    if(is.null(zip_code)){
+      p = plotly_empty()}
+    else{
+      print(zip_code)
+      p = TimeSeriesPlot_rent(zip_code,1)}
+    p
+  })
+  
+  output$plot2=renderPlotly({
+    zip_code=data_of_click$clicked_zone$id
+    
+    if(is.null(zip_code)){
+      p = plotly_empty()}
+    else{
+      
+      p = TimeSeriesPlot_rent(zip_code,2)}
+    p
+  })
+  
+  output$plot3=renderPlotly({
+    zip_code=data_of_click$clicked_zone$id
+    
+    if(is.null(zip_code)){
+      p = plotly_empty()}
+    else{
+      print(zip_code)
+      p = TimeSeriesPlot_rent(zip_code,3)}
+    p
+  })
+  
+  output$plot4=renderPlotly({
+    zip_code=data_of_click$clicked_zone$id
+    
+    if(is.null(zip_code)){
+      p = plotly_empty()}
+    else{
+      print(zip_code)
+      p = TimeSeriesPlot_rent(zip_code,4)}
+    p
+  })
+  
+  output$plot5=renderPlotly({
+    zip_code=data_of_click$clicked_zone$id
+    
+    if(is.null(zip_code)){
+      p = plotly_empty()}
+    else{
+      print(zip_code)
+      p = TimeSeriesPlot_rent(zip_code,5)}
     p
   })
   output$dot_plot_sale <- renderPlotly({

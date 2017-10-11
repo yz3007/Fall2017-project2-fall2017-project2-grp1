@@ -14,6 +14,9 @@ library(dplyr)
 library(geojsonio)
 library(htmltools)
 library(RColorBrewer)
+library(plotly)
+library(ggplot2)
+library(zoo)
 # Preparation
 nycounties <- geojson_read("nyczip.geojson", what = "sp")
 sales <- read.csv("Sale_Data.csv", header=TRUE, stringsAsFactors = FALSE)
@@ -112,37 +115,6 @@ labels_sales <- sprintf(
   "Zip Code: <strong>%s</strong><br/>Price Per Square Feet(PPSF): <strong>$%g/ft<sup>2</sup></strong>",
   as.character(nycounties$postalCode), nycounties$sales
 ) %>% lapply(htmltools::HTML)
-
-salesMap <- basemap %>% addPolygons(
-  fillColor = pal(nycounties$sales),
-  color = "#444444", 
-  weight = 2, 
-  smoothFactor = 0.5, 
-  opacity = 1.0, 
-  dashArray = "3",
-  fillOpacity = 0.7,
-  highlight = highlightOptions(
-    weight = 5,
-    color = "#355C7D",
-    dashArray = "",
-    fillOpacity = 0.7,
-    bringToFront = TRUE),
-  label = labels_sales,
-  labelOptions = labelOptions(
-    style = list("font-weight" = "normal", padding = "3px 8px"),
-    textsize = "15px",
-    direction = "auto")
-)  %>% addLegend(pal = pal, 
-                 values = nycounties$sales,
-                 opacity = 0.7, 
-                 title = 'Price Per Square Feet',
-                 position = "bottomright") %>% addLayersControl(
-                   
-                 ) %>% addLayersControl(
-                   overlayGroup = c("salesMap"),
-                   options = layersControlOptions(collapsed = FALSE)
-                 )
-
 # Rental Data
 # rent_data : data set which consists of 5 types of bedrooms
 # bed: type of bedroom such as 1,2,3,4,5 
@@ -165,163 +137,53 @@ labels_bed1 <- sprintf(
   "Zip Code: <strong>%s</strong><br/>Median Price: <strong>$%g</strong>",
   as.character(nycounties$postalCode), nycounties$rental_Bed1
 ) %>% lapply(htmltools::HTML)
-
-
-rental1bed <- basemap %>% addPolygons(
-  fillColor = pal1(nycounties$rental_Bed1),
-  color = "#444444", 
-  weight = 2, 
-  smoothFactor = 0.5, 
-  opacity = 1.0, 
-  dashArray = "3",
-  fillOpacity = 0.7,
-  highlight = highlightOptions(
-    weight = 5,
-    color = "#355C7D",
-    dashArray = "",
-    fillOpacity = 0.7,
-    bringToFront = TRUE),
-  label = labels_bed1,
-  labelOptions = labelOptions(
-    style = list("font-weight" = "normal", padding = "3px 8px"),
-    textsize = "15px",
-    direction = "auto")
-)  %>% addLegend(pal = pal1, 
-                 values = nycounties$rental_Bed1,
-                 opacity = 0.7, 
-                 title = 'Rental Price For 1 Bedroom',
-                 position = "bottomright")
-
 labels_bed2 <- sprintf(
   "Zip Code: <strong>%s</strong><br/>Median Price: <strong>$%g</strong>",
   as.character(nycounties$postalCode), nycounties$rental_Bed2
 ) %>% lapply(htmltools::HTML)
-
-
-rental2bed <- basemap %>% addPolygons(
-  fillColor = pal2(nycounties$rental_Bed2),
-  color = "#444444", 
-  weight = 2, 
-  smoothFactor = 0.5, 
-  opacity = 1.0, 
-  dashArray = "3",
-  fillOpacity = 0.7,
-  highlight = highlightOptions(
-    weight = 5,
-    color = "#355C7D",
-    dashArray = "",
-    fillOpacity = 0.7,
-    bringToFront = TRUE),
-  label = labels_bed2,
-  labelOptions = labelOptions(
-    style = list("font-weight" = "normal", padding = "3px 8px"),
-    textsize = "15px",
-    direction = "auto")
-)  %>% addLegend(pal = pal2, 
-                 values = nycounties$rental_Bed2,
-                 opacity = 0.7, 
-                 title = 'Rental Price For 2 Bedrooms',
-                 position = "bottomright")
-
 labels_bed3 <- sprintf(
   "Zip Code: <strong>%s</strong><br/>Median Price: <strong>$%g</strong>",
   as.character(nycounties$postalCode), nycounties$rental_Bed3
 ) %>% lapply(htmltools::HTML)
-
-
-rental3bed <- basemap %>% addPolygons(
-  fillColor = pal3(nycounties$rental_Bed3),
-  color = "#444444", 
-  weight = 2, 
-  smoothFactor = 0.5, 
-  opacity = 1.0, 
-  dashArray = "3",
-  fillOpacity = 0.7,
-  highlight = highlightOptions(
-    weight = 5,
-    color = "#355C7D",
-    dashArray = "",
-    fillOpacity = 0.7,
-    bringToFront = TRUE),
-  label = labels_bed3,
-  labelOptions = labelOptions(
-    style = list("font-weight" = "normal", padding = "3px 8px"),
-    textsize = "15px",
-    direction = "auto")
-)  %>% addLegend(pal = pal3, 
-                 values = nycounties$rental_Bed3,
-                 opacity = 0.7, 
-                 title = 'Rental Price For 3 Bedrooms',
-                 position = "bottomright")
-
 labels_bed4 <- sprintf(
   "Zip Code: <strong>%s</strong><br/>Median Price: <strong>$%g</strong>",
   as.character(nycounties$postalCode), nycounties$rental_Bed4
 ) %>% lapply(htmltools::HTML)
-
-
-rental4bed <- basemap %>% addPolygons(
-  fillColor = pal4(nycounties$rental_Bed4),
-  color = "#444444", 
-  weight = 2, 
-  smoothFactor = 0.5, 
-  opacity = 1.0, 
-  dashArray = "3",
-  fillOpacity = 0.7,
-  highlight = highlightOptions(
-    weight = 5,
-    color = "#355C7D",
-    dashArray = "",
-    fillOpacity = 0.7,
-    bringToFront = TRUE),
-  label = labels_bed4,
-  labelOptions = labelOptions(
-    style = list("font-weight" = "normal", padding = "3px 8px"),
-    textsize = "15px",
-    direction = "auto")
-)  %>% addLegend(pal = pal4, 
-                 values = nycounties$rental_Bed4,
-                 opacity = 0.7, 
-                 title = 'Rental Price For 4 Bedrooms',
-                 position = "bottomright")
-
 labels_bed5 <- sprintf(
   "Zip Code: <strong>%s</strong><br/>Median Price: <strong>$%g</strong>",
   as.character(nycounties$postalCode), nycounties$rental_Bed5
 ) %>% lapply(htmltools::HTML)
 
+data_rental <- rental
+data_sale <- sales
+x<- as.yearmon("2011-09") + 0:71/12
 
-rental5bed <- basemap %>% addPolygons(
-  fillColor = pal5(nycounties$rental_Bed5),
-  color = "#444444", 
-  weight = 2, 
-  smoothFactor = 0.5, 
-  opacity = 1.0, 
-  dashArray = "3",
-  fillOpacity = 0.7,
-  highlight = highlightOptions(
-    weight = 5,
-    color = "#355C7D",
-    dashArray = "",
-    fillOpacity = 0.7,
-    bringToFront = TRUE),
-  label = labels_bed5,
-  labelOptions = labelOptions(
-    style = list("font-weight" = "normal", padding = "3px 8px"),
-    textsize = "15px",
-    direction = "auto")
-)  %>% addLegend(pal = pal5, 
-                 values = nycounties$rental_Bed5,
-                 opacity = 0.7, 
-                 title = 'Rental Price For 5 Bedrooms',
-                 position = "bottomright")
-
-#functions
+# TimeSeries for Rental
+TimeSeriesPlot_rent <- function(x,y) {
+  zip<- data_rental[data_rental$RegionName == x, ]
+  zip_room <- zip[zip$Bedroom == y, -c(1,2,3,4)]
+  time <- as.yearmon("2011-09") + 0:71/12
+  y <- unlist(zip_room)
+  df <- data.frame(timeperiod=time, price=y)
+  plot_ly(data = df, x=~timeperiod, y=~price, mode = 'lines', opacity=0.8,
+          type="scatter", text = paste("Room Price is",y))
+  
+}
 
 
+
+# TimeSeries for Sale
+TimeSeriesPlot_sale <- function(Zipcode) {
+  time <- as.yearmon("2011-09") + 0:71/12
+  zip <- data_sale[data_sale$RegionName == 10025, -c(1,2,3)]
+  y <- unlist(zip)
+  df <- data.frame(timeperiod=time, price=y)
+  plot_ly(data = df, x=~timeperiod, y=~price, mode = 'lines', type="scatter", text = paste("Room Price is",y))
+}
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  data_of_click <- reactiveValues(clicked_zone=NULL)
   output$BedroomSale <- renderLeaflet({
     sales <- leaflet(nycounties) %>% 
       setView(lat=40.7128, lng=-74.0059, zoom=10) %>% addPolygons( color = "#BFA",weight = 1, smoothFactor = 0.5, opacity = 1.0, fillOpacity = 0.5, highlightOptions = highlightOptions(color = "red", weight = 2, bringToFront = TRUE)) %>% 
@@ -330,6 +192,7 @@ server <- function(input, output) {
       #addTiles(group = "BaseMap") %>% 
       #addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
       addPolygons(
+        layerId = nycounties$postalCode,
         fillColor = pal(nycounties$sales),
         color = "#444444", 
         weight = 2, 
@@ -370,6 +233,7 @@ server <- function(input, output) {
       #addTiles(group = "BaseMap") %>% 
       #addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
       addPolygons(
+        layerId = nycounties$postalCode,
         fillColor = pal1(nycounties$rental_Bed1),
         color = "#444444", 
         weight = 2, 
@@ -410,6 +274,7 @@ server <- function(input, output) {
       #addTiles(group = "BaseMap") %>% 
       #addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
       addPolygons(
+        layerId = nycounties$postalCode,
         fillColor = pal2(nycounties$rental_Bed2),
         color = "#444444", 
         weight = 2, 
@@ -450,6 +315,7 @@ server <- function(input, output) {
       #addTiles(group = "BaseMap") %>% 
       #addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
       addPolygons(
+        layerId = nycounties$postalCode,
         fillColor = pal3(nycounties$rental_Bed3),
         color = "#444444", 
         weight = 2, 
@@ -490,6 +356,7 @@ server <- function(input, output) {
       #addTiles(group = "BaseMap") %>% 
       #addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
       addPolygons(
+        layerId = nycounties$postalCode,
         fillColor = pal4(nycounties$rental_Bed4),
         color = "#444444", 
         weight = 2, 
@@ -530,6 +397,7 @@ server <- function(input, output) {
       #addTiles(group = "BaseMap") %>% 
       #addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
       addPolygons(
+        layerId = nycounties$postalCode,
         fillColor = pal5(nycounties$rental_Bed5),
         color = "#444444", 
         weight = 2, 
@@ -563,28 +431,108 @@ server <- function(input, output) {
         options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime"))
   })
   
-
-
+  
+  output$ranks <- renderPlot({
+    if(input$rankfact == 'Crime'){
+      crime_n <- as.matrix(unique(crime $ BORO_NM))
+      
+      n1 <- function(x){
+        sum(crime $ BORO_NM == x)
+      }
+      num_crime <- mapply(crime_n, FUN = n1)
+      df <- data.frame(place = crime_n, num = num_crime)
+      top_5_crime <- ggplot(df, aes(x = place, y = num, fill = place)) + geom_bar(stat = "identity", width = 0.7)
+      top_5_crime
+    }
+    else if(input$rankfact == 'Hospital'){
+      hospital_n <- as.matrix(unique(hospital $ Borough))
+      n2 <- function(x){
+        sum(hospital $ Borough == x)
+      }
+      num_hospital <- mapply(hospital_n, FUN = n2)
+      df <- data.frame(place = hospital_n, num = num_hospital)
+      top_5_hospital <- ggplot(df, aes(x = place, y = num,fill = place )) + geom_bar(stat = "identity", width = 0.7)
+      top_5_hospital}
+    else if(input$rankfact == 'Gallery'){
+      gallery <- art
+      gallery_n <- as.matrix(unique(gallery $ CITY ))
+      n3 <- function(x){
+        sum(gallery $ CITY == x)
+      }
+      num_gallery1 <- mapply(gallery_n, FUN = n3)
+      num_gallery <- tail(sort(num_gallery1),5)
+      df <- data.frame(place = gallery_n, num = num_gallery1)
+      top5 <- df[which(df$num %in% num_gallery),]
+      top_5_gallery <- ggplot(top5, aes(x = factor(place), y = factor(num), fill = factor(place))) + geom_bar(stat = "identity", width = 0.7, fill = "skyblue")
+      top_5_gallery
+    }
+    else if(input$rankfact == 'Theatre'){
+      theatre_n <- as.matrix(unique(theatre $ ZIP))
+      n5 <- function(x){
+        sum(theatre $ ZIP == x)
+      }
+      num_theatre1 <- mapply(theatre_n, FUN = n5)
+      num_theatre <- tail(sort(num_theatre1),5)
+      df <- data.frame(place = theatre_n, num = num_theatre1)
+      top5 <- df[which(df$num %in% num_theatre),]
+      top_5_theatre <- ggplot(top5, aes(x = factor(place), y = factor(num), fill = factor(place))) + geom_bar(stat = "identity", width = 0.7, fill = "skyblue")
+      top_5_theatre
+    }
+  })
+  #output$instruction <- renderText({
+    
+  #})
+  observeEvent(input$BedroomSale_shape_click, { # update the even object when clicking on a geojson shape
+    data_of_click$clicked_zone <- input$BedroomSale_shape_click     
+  })
+  observeEvent(input$Bedroom2_shape_click, { # update the even object when clicking on a geojson shape
+    data_of_click$clicked_zone <- input$Bedroom2_shape_click     
+  })
+  observeEvent(input$Bedroom3_shape_click, { # update the even object when clicking on a geojson shape
+    data_of_click$clicked_zone <- input$Bedroom3_shape_click     
+  })
+  observeEvent(input$Bedroom4_shape_click, { # update the even object when clicking on a geojson shape
+    data_of_click$clicked_zone <- input$Bedroom4_shape_click     
+  })  
+  
+  observeEvent(input$Bedroom5_shape_click, { # update the even object when clicking on a geojson shape
+    data_of_click$clicked_zone <- input$Bedroom5_shape_click     
+  })  
+  
+  
+  # Make a barplot or scatterplot depending of the selected point
+  output$text1 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
+  
+  
+  output$plot=renderPlotly({
+    zip_code=data_of_click$clicked_zone$id
+  
+    if(is.null(zip_code)){
+      p = plotly_empty()}
+    else{
  
-  #OutputMap('BedroomSale',input$S_Factors_1,'subway')
+      p = TimeSeriesPlot_sale(zip_code)}
+    p
+  })
+  output$dot_plot_sale <- renderPlotly({
+    year = as.numeric(format(as.Date(input$obs),"%Y"))
+    month = as.numeric(format(as.Date(input$obs),"%m"))
+    year_gap = year -2011
+    month_gap = month - 8
+    index = year_gap*12 + month_gap
+    price = sales[-1,index+3]
+    zipcode <- sales$RegionName[-1]
+    df <- data.frame(price=price, zipcode=zipcode)
+    a <- list(range = c(9900, 11800), title = "Zip Code", zeroline = FALSE, showline = FALSE, 
+              showgrid =FALSE, exponentformat="none", tickformat="{}")
+    b <- list(title = "PPSF (Price Per Square Feet)", zeroline = FALSE, showline = FALSE)
+    
+    plot_ly(
+      df, x = ~zipcode, y = ~price, color = ~price, 
+      mode = "markers", type="scatter", marker=list(size = 20, opacity=0.5), 
+      width = 800, height = 600) %>% layout(autosize = F, xaxis = a, yaxis = b)
+    
+  })
   
-  #fac_s = c(S_Factors_1,S_Factors_2,S_Factors_3,S_Factors_4,S_Factors_5)
-  #tol_Out(input,'BedroomSale',S_Factors_1,S_Factors_2,S_Factors_3,S_Factors_4,S_Factors_5)
-  
-  #fac_r1 = c(R1_Factors_1,R1_Factors_2,R1_Factors_3,R1_Factors_4,R1_Factors_5)
-  #tol_Out(input,rental1bed,R1_Factors_1,R1_Factors_2,R1_Factors_3,R1_Factors_4,R1_Factors_5)
-  
-  #fac_r2 = c(R2_Factors_1,R2_Factors_2,R2_Factors_3,R2_Factors_4,R2_Factors_5)
-  #tol_Out(input,rental2bed,R2_Factors_1,R2_Factors_2,R2_Factors_3,R2_Factors_4,R2_Factors_5)
-  
-  #fac_r3 = c(R3_Factors_1,R3_Factors_2,R3_Factors_3,R3_Factors_4,R3_Factors_5)
-  #tol_Out(input,rental3bed,R3_Factors_1,R3_Factors_2,R3_Factors_3,R3_Factors_4,R3_Factors_5)
-  
-  #fac_r4 = c(R4_Factors_1,R4_Factors_2,R4_Factors_3,R4_Factors_4,R4_Factors_5)
-  #tol_Out(input,rental4bed,R4_Factors_1,R4_Factors_2,R4_Factors_3,R4_Factors_4,R4_Factors_5)
-  
-  #fac_r5 = c(R5_Factors_1,R5_Factors_2,R5_Factors_3,R5_Factors_4,R5_Factors_5)
-  #tol_Out(input,rental5bed,R5_Factors_1,R5_Factors_2,R5_Factors_3,R5_Factors_4,R5_Factors_5)
-
   }
 

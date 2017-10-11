@@ -30,6 +30,13 @@ for(i in 1:nrow(dat)){
 nycounties@data$sales <- salesPrice
 
 # Load data
+
+#School
+school <- read.csv("School_Data.csv", header=TRUE, stringsAsFactors = FALSE)
+school <- school %>% na.omit() 
+school$longitude <- school$long
+school$latitude <- school$lat
+
 rental <- read.csv("Rental_Data.csv", header=TRUE, stringsAsFactors = FALSE)
 dat <- nycounties@data
 l <- list()
@@ -219,10 +226,11 @@ server <- function(input, output) {
     sales %>% addMarkers(lng = hospital$Longitude, lat = hospital$Latitude, clusterOptions = markerClusterOptions() , popup = pops[['hospital']], icon=iconS[['hospital']], group="hospital") %>% 
       addMarkers(lng = art$long, lat = art$lat,clusterOptions = markerClusterOptions() , popup = pops[['art']], icon=iconS[['art']], group="gallery") %>% addMarkers(lng = theatre$long, lat = theatre$lat,clusterOptions = markerClusterOptions() , popup = pops[['theatre']], icon=iconS[['theatre']], group="theatre") %>%
       addMarkers(lng = subway$Long, lat = subway$Lat,clusterOptions = markerClusterOptions(), popup = pops[['subway']], icon=iconS[['subway']], group="subway") %>% addMarkers(lng = crime$Longitude, lat = crime$Latitude,clusterOptions = markerClusterOptions(), popup = pops[['crime']], icon=iconS[['crime']], group="crime") %>%
+      addMarkers(lng = school$long, lat = school$lat,clusterOptions = markerClusterOptions() , popup = pops[['school']], icon=iconS[['school']], group="school") %>%
       addLayersControl(
         #baseGroups = c("BaseMap", "Toner"),
-        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime"),
-        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime"))
+        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime", "school"),
+        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime","school"))
     
   })
   output$Bedroom1 <- renderLeaflet({
@@ -261,10 +269,11 @@ server <- function(input, output) {
     rental1bed %>% addMarkers(lng = hospital$Longitude, lat = hospital$Latitude, clusterOptions = markerClusterOptions() , popup = pops[['hospital']], icon=iconS[['hospital']], group="hospital") %>% 
       addMarkers(lng = art$long, lat = art$lat,clusterOptions = markerClusterOptions() , popup = pops[['art']], icon=iconS[['art']], group="gallery") %>% addMarkers(lng = theatre$long, lat = theatre$lat,clusterOptions = markerClusterOptions() , popup = pops[['theatre']], icon=iconS[['theatre']], group="theatre") %>%
       addMarkers(lng = subway$Long, lat = subway$Lat,clusterOptions = markerClusterOptions(), popup = pops[['subway']], icon=iconS[['subway']], group="subway") %>% addMarkers(lng = crime$Longitude, lat = crime$Latitude,clusterOptions = markerClusterOptions(), popup = pops[['crime']], icon=iconS[['crime']], group="crime") %>%
+      addMarkers(lng = school$long, lat = school$lat,clusterOptions = markerClusterOptions() , popup = pops[['school']], icon=iconS[['school']], group="school") %>%
       addLayersControl(
         #baseGroups = c("BaseMap", "Toner"),
-        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime"),
-        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime"))
+        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime", "school"),
+        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime", "school"))
   })
   output$Bedroom2 <- renderLeaflet({
     rental2bed <- leaflet(nycounties) %>% 
@@ -302,10 +311,11 @@ server <- function(input, output) {
     rental2bed %>% addMarkers(lng = hospital$Longitude, lat = hospital$Latitude, clusterOptions = markerClusterOptions() , popup = pops[['hospital']], icon=iconS[['hospital']], group="hospital") %>% 
       addMarkers(lng = art$long, lat = art$lat,clusterOptions = markerClusterOptions() , popup = pops[['art']], icon=iconS[['art']], group="gallery") %>% addMarkers(lng = theatre$long, lat = theatre$lat,clusterOptions = markerClusterOptions() , popup = pops[['theatre']], icon=iconS[['theatre']], group="theatre") %>%
       addMarkers(lng = subway$Long, lat = subway$Lat,clusterOptions = markerClusterOptions(), popup = pops[['subway']], icon=iconS[['subway']], group="subway") %>% addMarkers(lng = crime$Longitude, lat = crime$Latitude,clusterOptions = markerClusterOptions(), popup = pops[['crime']], icon=iconS[['crime']], group="crime") %>%
+      addMarkers(lng = school$long, lat = school$lat,clusterOptions = markerClusterOptions() , popup = pops[['school']], icon=iconS[['school']], group="school") %>%
       addLayersControl(
         #baseGroups = c("BaseMap", "Toner"),
-        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime"),
-        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime"))
+        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime", "school"),
+        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime", "school"))
   })
   output$Bedroom3 <- renderLeaflet({
     rental3bed <- leaflet(nycounties) %>% 
@@ -343,10 +353,11 @@ server <- function(input, output) {
     rental3bed %>% addMarkers(lng = hospital$Longitude, lat = hospital$Latitude, clusterOptions = markerClusterOptions() , popup = pops[['hospital']], icon=iconS[['hospital']], group="hospital") %>% 
       addMarkers(lng = art$long, lat = art$lat,clusterOptions = markerClusterOptions() , popup = pops[['art']], icon=iconS[['art']], group="gallery") %>% addMarkers(lng = theatre$long, lat = theatre$lat,clusterOptions = markerClusterOptions() , popup = pops[['theatre']], icon=iconS[['theatre']], group="theatre") %>%
       addMarkers(lng = subway$Long, lat = subway$Lat,clusterOptions = markerClusterOptions(), popup = pops[['subway']], icon=iconS[['subway']], group="subway") %>% addMarkers(lng = crime$Longitude, lat = crime$Latitude,clusterOptions = markerClusterOptions(), popup = pops[['crime']], icon=iconS[['crime']], group="crime") %>%
+      addMarkers(lng = school$long, lat = school$lat,clusterOptions = markerClusterOptions() , popup = pops[['school']], icon=iconS[['school']], group="school") %>%
       addLayersControl(
         #baseGroups = c("BaseMap", "Toner"),
-        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime"),
-        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime"))
+        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime", "school"),
+        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime", "school"))
   })
   output$Bedroom4 <- renderLeaflet({
     rental4bed  <- leaflet(nycounties) %>% 
@@ -384,10 +395,11 @@ server <- function(input, output) {
     rental4bed %>% addMarkers(lng = hospital$Longitude, lat = hospital$Latitude, clusterOptions = markerClusterOptions() , popup = pops[['hospital']], icon=iconS[['hospital']], group="hospital") %>% 
       addMarkers(lng = art$long, lat = art$lat,clusterOptions = markerClusterOptions() , popup = pops[['art']], icon=iconS[['art']], group="gallery") %>% addMarkers(lng = theatre$long, lat = theatre$lat,clusterOptions = markerClusterOptions() , popup = pops[['theatre']], icon=iconS[['theatre']], group="theatre") %>%
       addMarkers(lng = subway$Long, lat = subway$Lat,clusterOptions = markerClusterOptions(), popup = pops[['subway']], icon=iconS[['subway']], group="subway") %>% addMarkers(lng = crime$Longitude, lat = crime$Latitude,clusterOptions = markerClusterOptions(), popup = pops[['crime']], icon=iconS[['crime']], group="crime") %>%
+      addMarkers(lng = school$long, lat = school$lat,clusterOptions = markerClusterOptions() , popup = pops[['school']], icon=iconS[['school']], group="school") %>%
       addLayersControl(
         #baseGroups = c("BaseMap", "Toner"),
-        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime"),
-        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime"))
+        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime", "school"),
+        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime", "school"))
   })
   output$Bedroom5 <- renderLeaflet({
     rental5bed <- leaflet(nycounties) %>% 
@@ -425,11 +437,13 @@ server <- function(input, output) {
     rental5bed %>% addMarkers(lng = hospital$Longitude, lat = hospital$Latitude, clusterOptions = markerClusterOptions() , popup = pops[['hospital']], icon=iconS[['hospital']], group="hospital") %>% 
       addMarkers(lng = art$long, lat = art$lat,clusterOptions = markerClusterOptions() , popup = pops[['art']], icon=iconS[['art']], group="gallery") %>% addMarkers(lng = theatre$long, lat = theatre$lat,clusterOptions = markerClusterOptions() , popup = pops[['theatre']], icon=iconS[['theatre']], group="theatre") %>%
       addMarkers(lng = subway$Long, lat = subway$Lat,clusterOptions = markerClusterOptions(), popup = pops[['subway']], icon=iconS[['subway']], group="subway") %>% addMarkers(lng = crime$Longitude, lat = crime$Latitude,clusterOptions = markerClusterOptions(), popup = pops[['crime']], icon=iconS[['crime']], group="crime") %>%
+      addMarkers(lng = school$long, lat = school$lat,clusterOptions = markerClusterOptions() , popup = pops[['school']], icon=iconS[['school']], group="school") %>%
       addLayersControl(
         #baseGroups = c("BaseMap", "Toner"),
-        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime"),
-        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime"))
+        overlayGroups = c("hospital", "gallery", "theatre", "subway", "crime", "school"),
+        options = layersControlOptions(collapsed = FALSE))%>% hideGroup(c("hospital", "gallery", "theatre", "subway", "crime", "school"))
   })
+  
   
   
   output$ranks <- renderPlot({
@@ -463,7 +477,7 @@ server <- function(input, output) {
       num_gallery <- tail(sort(num_gallery1),5)
       df <- data.frame(place = gallery_n, num = num_gallery1)
       top5 <- df[which(df$num %in% num_gallery),]
-      top_5_gallery <- ggplot(top5, aes(x = factor(place), y = factor(num), fill = factor(place))) + geom_bar(stat = "identity", width = 0.7, fill = "skyblue")
+      top_5_gallery <- ggplot(top5, aes(x = factor(place), y = factor(num), fill = place)) + geom_bar(stat = "identity", width = 0.7, fill = "skyblue")
       top_5_gallery
     }
     else if(input$rankfact == 'Theatre'){
@@ -475,8 +489,20 @@ server <- function(input, output) {
       num_theatre <- tail(sort(num_theatre1),5)
       df <- data.frame(place = theatre_n, num = num_theatre1)
       top5 <- df[which(df$num %in% num_theatre),]
-      top_5_theatre <- ggplot(top5, aes(x = factor(place), y = factor(num), fill = factor(place))) + geom_bar(stat = "identity", width = 0.7, fill = "skyblue")
+      top_5_theatre <- ggplot(top5, aes(x = factor(place), y = factor(num), fill = place)) + geom_bar(stat = "identity", width = 0.7, fill = "skyblue")
       top_5_theatre
+    }
+    else if(input$rankfact == 'School'){
+      school_n <- as.matrix(unique(school$ZIP))
+      n6 <- function(x){
+        sum(school$ZIP == x)
+      }
+      num_school1 <- mapply(theatre_n, FUN = n6)
+      num_school <- tail(sort(num_school1),5)
+      df <- data.frame(place = school_n, num = num_school1)
+      top5 <- df[which(df$num %in% num_school),]
+      top_5_school <- ggplot(top5, aes(x = factor(place), y = factor(num), fill = factor(place))) + geom_bar(stat = "identity", width = 0.7, fill = "skyblue")
+      top_5_school
     }
   })
   #output$instruction <- renderText({
@@ -485,8 +511,13 @@ server <- function(input, output) {
   observeEvent(input$BedroomSale_shape_click, { # update the even object when clicking on a geojson shape
     data_of_click$clicked_zone <- input$BedroomSale_shape_click     
   })
+  observeEvent(input$Bedroom1_shape_click, { # update the even object when clicking on a geojson shape
+    data_of_click$clicked_zone <- input$Bedroom3_shape_click     
+  })
   observeEvent(input$Bedroom2_shape_click, { # update the even object when clicking on a geojson shape
-    data_of_click$clicked_zone <- input$Bedroom2_shape_click     
+    data_of_click$clicked_zone <- input$Bedroom2_shape_click  
+    #browser()
+    #print('hello')
   })
   observeEvent(input$Bedroom3_shape_click, { # update the even object when clicking on a geojson shape
     data_of_click$clicked_zone <- input$Bedroom3_shape_click     
@@ -501,7 +532,10 @@ server <- function(input, output) {
   
   
   # Make a barplot or scatterplot depending of the selected point
-  output$text1 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
+  output$text1 <- renderUI({
+    str1 <- paste("You have selected", data_of_click$clicked_zone$id)
+    str2 <- paste("Yoblablablablabal")
+    HTML(paste(str1, str2, sep = '<br/>'))})
   output$text2 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
   output$text3 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
   output$text4 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
@@ -536,9 +570,11 @@ server <- function(input, output) {
     if(is.null(zip_code)){
       p = plotly_empty()}
     else{
-      
-      p = TimeSeriesPlot_rent(zip_code,2)}
+    
+      p = TimeSeriesPlot_rent(zip_code,2)
+      }
     p
+    
   })
   
   output$plot3=renderPlotly({

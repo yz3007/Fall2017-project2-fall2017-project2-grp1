@@ -109,7 +109,7 @@ bins <- c(0, 500, 1000, 1500, 2000, 2500,Inf)
 #    YlGnBu (YlOrBr) (YlGn) Blues Reds (Accent) Oranges Purples
 pal <- colorBin("YlOrRd", domain = nycounties$sales, bins = bins)
 labels_sales <- sprintf(
-  "<strong>ZipCode: %s</strong><br/>%g $ / ft<sup>2</sup>",
+  "Zip Code: <strong>%s</strong><br/>Price Per Square Feet(PPSF): <strong>$%g/ft<sup>2</sup></strong>",
   as.character(nycounties$postalCode), nycounties$sales
 ) %>% lapply(htmltools::HTML)
 
@@ -162,7 +162,7 @@ pal4 <- colorBin("Oranges", domain = nycounties$rental_Bed4, bins = bin4)
 pal5 <- colorBin("Purples", domain = nycounties$rental_Bed5, bins = bin5)
 
 labels_bed1 <- sprintf(
-  "<strong>ZipCode: %s</strong><br/>$%g",
+  "Zip Code: <strong>%s</strong><br/>Median Price: <strong>$%g</strong>",
   as.character(nycounties$postalCode), nycounties$rental_Bed1
 ) %>% lapply(htmltools::HTML)
 
@@ -193,7 +193,7 @@ rental1bed <- basemap %>% addPolygons(
                  position = "bottomright")
 
 labels_bed2 <- sprintf(
-  "<strong>ZipCode: %s</strong><br/>$%g",
+  "Zip Code: <strong>%s</strong><br/>Median Price: <strong>$%g</strong>",
   as.character(nycounties$postalCode), nycounties$rental_Bed2
 ) %>% lapply(htmltools::HTML)
 
@@ -224,7 +224,7 @@ rental2bed <- basemap %>% addPolygons(
                  position = "bottomright")
 
 labels_bed3 <- sprintf(
-  "<strong>ZipCode: %s</strong><br/>$%g",
+  "Zip Code: <strong>%s</strong><br/>Median Price: <strong>$%g</strong>",
   as.character(nycounties$postalCode), nycounties$rental_Bed3
 ) %>% lapply(htmltools::HTML)
 
@@ -255,7 +255,7 @@ rental3bed <- basemap %>% addPolygons(
                  position = "bottomright")
 
 labels_bed4 <- sprintf(
-  "<strong>ZipCode: %s</strong><br/>$%g",
+  "Zip Code: <strong>%s</strong><br/>Median Price: <strong>$%g</strong>",
   as.character(nycounties$postalCode), nycounties$rental_Bed4
 ) %>% lapply(htmltools::HTML)
 
@@ -286,7 +286,7 @@ rental4bed <- basemap %>% addPolygons(
                  position = "bottomright")
 
 labels_bed5 <- sprintf(
-  "<strong>ZipCode: %s</strong><br/>$%g",
+  "Zip Code: <strong>%s</strong><br/>Median Price: <strong>$%g</strong>",
   as.character(nycounties$postalCode), nycounties$rental_Bed5
 ) %>% lapply(htmltools::HTML)
 

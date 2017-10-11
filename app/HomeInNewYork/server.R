@@ -188,6 +188,9 @@ TimeSeriesPlot_sale <- function(Zipcode) {
   plot_ly(data = df, x=~timeperiod, y=~price, mode = 'lines', type="scatter", text = paste("Room Price is",y))
 }
 
+info_zip <- read.csv("Zipcode_General_Info.csv", header=TRUE, stringsAsFactors = FALSE)
+
+
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   data_of_click <- reactiveValues(clicked_zone=NULL)
@@ -512,7 +515,7 @@ server <- function(input, output) {
     data_of_click$clicked_zone <- input$BedroomSale_shape_click     
   })
   observeEvent(input$Bedroom1_shape_click, { # update the even object when clicking on a geojson shape
-    data_of_click$clicked_zone <- input$Bedroom3_shape_click     
+    data_of_click$clicked_zone <- input$Bedroom1_shape_click     
   })
   observeEvent(input$Bedroom2_shape_click, { # update the even object when clicking on a geojson shape
     data_of_click$clicked_zone <- input$Bedroom2_shape_click  
@@ -532,15 +535,110 @@ server <- function(input, output) {
   
   
   # Make a barplot or scatterplot depending of the selected point
+  output$text01 <- renderUI({
+    str1 <- paste0("<b>",info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood,"</b>")
+    
+    HTML(str1)})
+  output$text02 <- renderUI({
+    str1 <- paste0("<b>",info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood,"</b>")
+    
+    HTML(str1)})
+  output$text03 <- renderUI({
+    str1 <- paste0("<b>",info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood,"</b>")
+    
+    HTML(str1)})
+  output$text04 <- renderUI({
+    str1 <- paste0("<b>",info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood,"</b>")
+    
+    HTML(str1)})
+  output$text05 <- renderUI({
+    str1 <- paste0("<b>",info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood,"</b>")
+    
+    HTML(str1)})
+  output$text06 <- renderUI({
+    str1 <- paste0("<b>",info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood,"</b>")
+    
+    HTML(str1)})
+  
+  
   output$text1 <- renderUI({
-    str1 <- paste("You have selected", data_of_click$clicked_zone$id)
-    str2 <- paste("Yoblablablablabal")
-    HTML(paste(str1, str2, sep = '<br/>'))})
-  output$text2 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
-  output$text3 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
-  output$text4 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
-  output$text5 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
-  output$text6 <- renderText({paste("You have selected", data_of_click$clicked_zone$id)})
+    if(!is.null(data_of_click$clicked_zone$id)){
+      str1 <- paste0("<b>","Demograhics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :",'</b>')
+      str2 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Demographics,'</br>')
+      str3 <- paste0("<b>","Real Estate Characteristics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :","</b>")
+      str4 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Real.Estate,'</br>')
+      str5 <- paste0("<b>","Median salary in the neighborhood:","</b>")
+      str6 <- paste(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Earnings)  
+      HTML(paste(str1, str2, str3, str4, str5, str6, sep = '<br/>'))}
+    else{
+      HTML(' ')
+    }
+  })
+  output$text2 <- renderUI({
+    if(!is.null(data_of_click$clicked_zone$id)){
+      str1 <- paste0("<b>","Demograhics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :",'</b>')
+      str2 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Demographics,'</br>')
+      str3 <- paste0("<b>","Real Estate Characteristics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :","</b>")
+      str4 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Real.Estate,'</br>')
+      str5 <- paste0("<b>","Median salary in the neighborhood:","</b>")
+      str6 <- paste(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Earnings)  
+      HTML(paste(str1, str2, str3, str4, str5, str6, sep = '<br/>'))}
+    else{
+      HTML(' ')
+    }
+  })
+  output$text3 <- renderUI({
+    if(!is.null(data_of_click$clicked_zone$id)){
+      str1 <- paste0("<b>","Demograhics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :",'</b>')
+      str2 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Demographics,'</br>')
+      str3 <- paste0("<b>","Real Estate Characteristics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :","</b>")
+      str4 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Real.Estate,'</br>')
+      str5 <- paste0("<b>","Median salary in the neighborhood:","</b>")
+      str6 <- paste(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Earnings)  
+      HTML(paste(str1, str2, str3, str4, str5, str6, sep = '<br/>'))}
+    else{
+      HTML(' ')
+    }
+  })
+  output$text4 <- renderUI({
+    if(!is.null(data_of_click$clicked_zone$id)){
+      str1 <- paste0("<b>","Demograhics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :",'</b>')
+      str2 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Demographics,'</br>')
+      str3 <- paste0("<b>","Real Estate Characteristics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :","</b>")
+      str4 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Real.Estate,'</br>')
+      str5 <- paste0("<b>","Median salary in the neighborhood:","</b>")
+      str6 <- paste(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Earnings)  
+      HTML(paste(str1, str2, str3, str4, str5, str6, sep = '<br/>'))}
+    else{
+      HTML(' ')
+    }
+  })
+  output$text5 <- renderUI({
+    if(!is.null(data_of_click$clicked_zone$id)){
+      str1 <- paste0("<b>","Demograhics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :",'</b>')
+      str2 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Demographics,'</br>')
+      str3 <- paste0("<b>","Real Estate Characteristics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :","</b>")
+      str4 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Real.Estate,'</br>')
+      str5 <- paste0("<b>","Median salary in the neighborhood:","</b>")
+      str6 <- paste(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Earnings)  
+      HTML(paste(str1, str2, str3, str4, str5, str6, sep = '<br/>'))}
+    else{
+      HTML(' ')
+    }
+  })
+  output$text6 <- renderUI({
+    if(!is.null(data_of_click$clicked_zone$id)){
+      str1 <- paste0("<b>","Demograhics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :",'</b>')
+      str2 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Demographics,'</br>')
+      str3 <- paste0("<b>","Real Estate Characteristics of ", info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Neighborhood, " :","</b>")
+      str4 <- paste0(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Real.Estate,'</br>')
+      str5 <- paste0("<b>","Median salary in the neighborhood:","</b>")
+      str6 <- paste(info_zip[info_zip$Zip.Code==data_of_click$clicked_zone$id,]$Earnings)  
+      HTML(paste(str1, str2, str3, str4, str5, str6, sep = '<br/>'))}
+    else{
+      HTML(' ')
+    }
+  })
   
   output$plot=renderPlotly({
     zip_code=data_of_click$clicked_zone$id
@@ -620,7 +718,7 @@ server <- function(input, output) {
     df <- data.frame(price=price, zipcode=zipcode)
     a <- list(range = c(9900, 11800), title = "Zip Code", zeroline = FALSE, showline = FALSE, 
               showgrid =FALSE, exponentformat="none", tickformat="{}")
-    b <- list(title = "PPSF (Price Per Square Feet)", zeroline = FALSE, showline = FALSE)
+    b <- list(range = c(-100, 3100), title = "PPSF (Price Per Square Feet)", zeroline = FALSE, showline = FALSE)
     
     plot_ly(
       df, x = ~zipcode, y = ~price, color = ~price, 

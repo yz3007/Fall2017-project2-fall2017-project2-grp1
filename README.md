@@ -3,7 +3,7 @@ Term: Fall 2017
 
 In this second project of GU4243/GR5243 Applied Data Science, we develop an *Exploratory Data Analysis and Visualization* shiny app on a topic of your choice using U.S. government open data released on the [data.gov](https://data.gov/) website. See [Project 2 Description](doc/project2_desc.md) for more details.  
 
-+ **Team 1:**
++ **Team 1 - team members:**
 	+ Jing Zhao 
 	+ Siyi Tao 
 	+ Shuyao Hao
@@ -12,10 +12,10 @@ In this second project of GU4243/GR5243 Applied Data Science, we develop an *Exp
 
 ## introduction:
 
-![screenshot](doc/Screenshot.png)
 In this second project, we have developed an Rshiny application designed to help New Yorkers to find a place to live. 
 This app allow the users to explore data and find the neighborhood that suits them best. 
- 
+![screenshot](doc/Screenshot.png)
+
 ## What is the Business Problem Solved:
 It's always difficult to know where you should live when you arrive in a new city for the first time. Some neighborhood are great but too expensive, others would be cheaper but badly deserved by the subway or maybe would not be safe. 
 
@@ -45,8 +45,17 @@ People spend a lot of time visiting appartments before finding the neighborhood 
 	
 ## Data Sources:
 
-
-
++ Crime data comes from https://www.data.gov/
++ Rental Prices data comes from https://www.zillow.com/
++ Sales Prices data comes from https://www.zillow.com/
++ School data comes from https://opendata.cityofnewyork.us/
++ Hospitals data comes from https://opendata.cityofnewyork.us/
++ Art Galleries data comes from https://opendata.cityofnewyork.us/
++ Theatres data comes from https://opendata.cityofnewyork.us/
+ 
+ All the information on the neighborhood (demographics, real estate information, earnings data) was queried using a web crawler on this website: https://www.unitedstateszipcodes.org/
+ 
+ We used Google Map API to get the precise location corresponding to the different addresses.
 
 
 ## Contribution statement: 

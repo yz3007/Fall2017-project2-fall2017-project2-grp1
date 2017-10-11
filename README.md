@@ -10,7 +10,7 @@ In this second project of GU4243/GR5243 Applied Data Science, we develop an *Exp
 	+ Vassily Carantino
 	+ Yufei Zhao
 
-![screenshot](doc/screenshot2.png)
+![screenshot](doc/Screenshot.png)
 
 ## introduction:
 In this second project, we have developed an Rshiny application designed to help New Yorkers to find a place to live. 

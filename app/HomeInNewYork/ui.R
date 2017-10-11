@@ -26,15 +26,21 @@ ui<- navbarPage( "Choose Your Life",
                                 
                        #),
                  tabPanel("Sales",
-                          #leafletOutput("BedroomSale",width = "100%", height = 700)                                
+                          #leafletOutput("BedroomSale",width = "100%", height = 700),                                
                           br(),
                           column(8,leafletOutput("BedroomSale", height="700px")),
+                  
                           column(4,br(),br(),br(),br(),plotlyOutput("plot", height="300px")),
-                          column(4,br(),br(),br(),br(),textOutput("text1")),
+                          column(4,br(),br(),br(),br(),htmlOutput("text1")),
                           #Please add a box for the text !!
-                          br()                                
+                          br()       
+                          #absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
+                           #             draggable = TRUE, color = 'opacity:0.9',
+                            #            top = 180, left = 60, right = "auto", bottom = "auto",
+                             #           width = 350, height = "auto",
+                              #          plotlyOutput("plot", height="300px")
                           
-                 ),
+                        ),
 
                        navbarMenu("Rental",
                                   
@@ -43,7 +49,7 @@ ui<- navbarPage( "Choose Your Life",
                                            #leafletOutput("Bedroom1",width = "100%", height = 700)
                                            br(),
                                            column(8,leafletOutput("Bedroom1", height = 700)),
-                                           column(4,br(),br(),br(),br(),plotOutput("plot1", height="300px")),
+                                           column(4,br(),br(),br(),br(),plotlyOutput("plot1", height="300px")),
                                            column(4,br(),br(),br(),br(),textOutput("text2")),
                                            #Please add a box for the text !!
                                            br() 
@@ -55,7 +61,7 @@ ui<- navbarPage( "Choose Your Life",
                                            #leafletOutput("Bedroom2",width = "100%", height = 700)
                                            br(),
                                            column(8,leafletOutput("Bedroom2", height = 700)),
-                                           column(4,br(),br(),br(),br(),plotOutput("plot2", height="300px")),
+                                           column(4,br(),br(),br(),br(),plotlyOutput("plot2", height="300px")),
                                            column(4,br(),br(),br(),br(),textOutput("text3")),
                                            #Please add a box for the text !!
                                            br()                           
@@ -65,7 +71,7 @@ ui<- navbarPage( "Choose Your Life",
                                            #leafletOutput("Bedroom3",width = "100%", height = 700)
                                            br(),
                                            column(8,leafletOutput("Bedroom3", height = 700)),
-                                           column(4,br(),br(),br(),br(),plotOutput("plot3", height="300px")),
+                                           column(4,br(),br(),br(),br(),plotlyOutput("plot3", height="300px")),
                                            column(4,br(),br(),br(),br(),textOutput("text4")),
                                            #Please add a box for the text !!
                                            br()
@@ -75,7 +81,7 @@ ui<- navbarPage( "Choose Your Life",
                                            #leafletOutput("Bedroom4",width = "100%", height = 700)
                                            br(),
                                            column(8,leafletOutput("Bedroom4", height = 700)),
-                                           column(4,br(),br(),br(),br(),plotOutput("plot4", height="300px")),
+                                           column(4,br(),br(),br(),br(),plotlyOutput("plot4", height="300px")),
                                            column(4,br(),br(),br(),br(),textOutput("text5")),
                                            #Please add a box for the text !!
                                            br()
@@ -85,7 +91,7 @@ ui<- navbarPage( "Choose Your Life",
                                            #leafletOutput("Bedroom5",width = "100%", height = 700)
                                            br(),
                                            column(8,leafletOutput("Bedroom5", height = 700)),
-                                           column(4,br(),br(),br(),br(),plotOutput("plot5", height="300px")),
+                                           column(4,br(),br(),br(),br(),plotlyOutput("plot5", height="300px")),
                                            column(4,br(),br(),br(),br(),textOutput("text6")),
                                            #Please add a box for the text !!
                                            br()
@@ -113,20 +119,20 @@ ui<- navbarPage( "Choose Your Life",
                                      )
                                      ),
                             tabPanel("Rankings",
-                                     titlePanel("Recent 3 years Top 10 Rankings"),
+                                     titlePanel("Recent 3 Years Top 10 Rankings"),
                                      sidebarLayout(
                                        sidebarPanel(
                                          
                                          selectInput(inputId = "rankfact",
                                                      label  = "Choose a factor",
-                                                     choices = c('Crime','Hospital','Gallery','Theatre'),
+                                                     choices = c('Crime','Hospital','Gallery','Theatre','School'),
                                                      selected ='Health'),
                                          width = 3
                                          
                                        ),
                                        
                                        mainPanel(
-                                         plotOutput("ranks", height = "420px")#,
+                                         plotOutput("ranks", height = 600)#,
                                          #textOutput('instruction',height = '200px')
                                        )
                                        

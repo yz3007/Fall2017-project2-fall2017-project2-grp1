@@ -204,8 +204,8 @@ tags$head(tags$style("#text3{color: black;
                                          
                                          selectInput(inputId = "rankfact",
                                                      label  = "Choose a factor",
-                                                     choices = c('Crime','Hospital','Gallery','Theatre','School'),
-                                                     selected ='Health'),
+                                                     choices = c('Crime','Hospital','Gallery'),
+                                                     selected ='Hospital'),
                                          width = 3
                                          
                                        ),

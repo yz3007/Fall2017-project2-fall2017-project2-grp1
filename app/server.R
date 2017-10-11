@@ -189,7 +189,42 @@ TimeSeriesPlot_sale <- function(Zipcode) {
 }
 
 info_zip <- read.csv("./data/Zipcode_General_Info.csv", header=TRUE, stringsAsFactors = FALSE)
+gallery <- art
 
+crime_n <- as.matrix(unique(crime $ BORO_NM))
+n1 <- function(x){
+  sum(crime $ BORO_NM == x)
+}
+num_crime <- mapply(crime_n, FUN = n1)
+# sort(num_crime,decreasing = TRUE)
+df <- data.frame(place = crime_n, num = num_crime)
+top_5_crime <- ggplot(df, aes(x = reorder(place, -num), y = num, fill=place)) + geom_bar(stat = "identity", width = 0.7) + labs(x = "places")
+
+
+
+#hospital
+hospital_n <- as.matrix(unique(hospital $ Borough))
+n2 <- function(x){
+  sum(hospital $ Borough == x)
+}
+num_hospital <- mapply(hospital_n, FUN = n2)
+df <- data.frame(place = hospital_n, num = num_hospital)
+top_5_hospital <- ggplot(df, aes(x = reorder(place, -num), y = num, fill=place)) + geom_bar(stat = "identity", width = 0.7) + labs(x = "places")
+
+
+
+#gallery
+gallery_n <- as.matrix(unique(gallery $ CITY ))
+n3 <- function(x){
+  sum(gallery $ CITY == x)
+}
+num_gallery1 <- mapply(gallery_n, FUN = n3)
+num_gallery <- tail(sort(num_gallery1),5)
+df <- data.frame(place = gallery_n, num = num_gallery1)
+top5 <- df[which(df$num %in% num_gallery),]
+place <- factor(top5 $ place)
+num <- factor(top5 $ num)
+top_5_gallery <- ggplot(top5, aes(x = reorder(place, -num), y = num, fill=place)) + geom_bar(stat = "identity", width = 0.7) + labs(x = "places")
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
@@ -451,62 +486,13 @@ server <- function(input, output) {
   
   output$ranks <- renderPlot({
     if(input$rankfact == 'Crime'){
-      crime_n <- as.matrix(unique(crime $ BORO_NM))
-      
-      n1 <- function(x){
-        sum(crime $ BORO_NM == x)
-      }
-      num_crime <- mapply(crime_n, FUN = n1)
-      df <- data.frame(place = crime_n, num = num_crime)
-      top_5_crime <- ggplot(df, aes(x = place, y = num, fill = place)) + geom_bar(stat = "identity", width = 0.7)
       top_5_crime
     }
     else if(input$rankfact == 'Hospital'){
-      hospital_n <- as.matrix(unique(hospital $ Borough))
-      n2 <- function(x){
-        sum(hospital $ Borough == x)
-      }
-      num_hospital <- mapply(hospital_n, FUN = n2)
-      df <- data.frame(place = hospital_n, num = num_hospital)
-      top_5_hospital <- ggplot(df, aes(x = place, y = num,fill = place )) + geom_bar(stat = "identity", width = 0.7)
       top_5_hospital}
     else if(input$rankfact == 'Gallery'){
-      gallery <- art
-      gallery_n <- as.matrix(unique(gallery $ CITY ))
-      n3 <- function(x){
-        sum(gallery $ CITY == x)
-      }
-      num_gallery1 <- mapply(gallery_n, FUN = n3)
-      num_gallery <- tail(sort(num_gallery1),5)
-      df <- data.frame(place = gallery_n, num = num_gallery1)
-      top5 <- df[which(df$num %in% num_gallery),]
-      top_5_gallery <- ggplot(top5, aes(x = factor(place), y = factor(num), fill = place)) + geom_bar(stat = "identity", width = 0.7, fill = "skyblue")
       top_5_gallery
-    }
-    else if(input$rankfact == 'Theatre'){
-      theatre_n <- as.matrix(unique(theatre $ ZIP))
-      n5 <- function(x){
-        sum(theatre $ ZIP == x)
       }
-      num_theatre1 <- mapply(theatre_n, FUN = n5)
-      num_theatre <- tail(sort(num_theatre1),5)
-      df <- data.frame(place = theatre_n, num = num_theatre1)
-      top5 <- df[which(df$num %in% num_theatre),]
-      top_5_theatre <- ggplot(top5, aes(x = factor(place), y = factor(num), fill = place)) + geom_bar(stat = "identity", width = 0.7, fill = "skyblue")
-      top_5_theatre
-    }
-    else if(input$rankfact == 'School'){
-      school_n <- as.matrix(unique(school$ZIP))
-      n6 <- function(x){
-        sum(school$ZIP == x)
-      }
-      num_school1 <- mapply(theatre_n, FUN = n6)
-      num_school <- tail(sort(num_school1),5)
-      df <- data.frame(place = school_n, num = num_school1)
-      top5 <- df[which(df$num %in% num_school),]
-      top_5_school <- ggplot(top5, aes(x = factor(place), y = factor(num), fill = factor(place))) + geom_bar(stat = "identity", width = 0.7, fill = "skyblue")
-      top_5_school
-    }
   })
   #output$instruction <- renderText({
     
